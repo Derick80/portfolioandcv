@@ -1,0 +1,182 @@
+---
+title: Blog Templating
+author: Derick Hoskinson PhD
+date: 2024-12-01
+published: true
+description: I go through the motions of a written descripti9on for testing
+imageUrl: /assets/images/dnaseq.jpg
+categories: [Coding, Testing, Documentation]
+---
+
+## Testing
+
+| foo | bar |
+| --- | --- |
+| baz | bim |
+
+A table:
+
+| a | b |
+| - | - |
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `name` | string | Name of the resource |
+| `path` | string | Path to the resource |
+
+| Left | Center | Right |
+| :--- | :----: | ----: |
+| Left-aligned text | Center-aligned text | Right-aligned text |
+
+```typescript
+export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
+    const files = (await fs.readdir(POSTS_FOLDER)).filter(
+        (file) => path.extname(file) === '.mdx'
+    )
+
+    const posts = await Promise.all(
+        files.map(async (file) => {
+            const fileContent = await fs.readFile(
+                path.join(POSTS_FOLDER, file),
+                'utf-8'
+            )
+            const { posts } = parseTheFrontmatter(fileContent)
+
+            return posts
+        })
+    )
+    return posts
+})
+```
+
+
+## Inline
+
+This is an example of inline code: `const x = 1;`
+
+## Basic Block
+
+```typescript {2,4}
+import { Components } from "react" // [!code --]
+import { Component } from "react" // [!code ++]
+
+export default class MyComponent extends Component {
+	render() {
+		return <div>Hello World</div>;
+	}
+}
+```
+
+## Block With Title
+
+```typescript title="MyComponent.tsx" caption="look at my code block"
+import { Component } from "react";
+// [!code word:class]
+
+export default class MyComponent extends Component {
+	render() {
+		return <div>Hello World</div>;
+	}
+}
+```
+
+## Block With Highlighted Lines
+
+```typescript {1,5} title="MyComponent.tsx"
+import { Component } from "react";
+
+export default class MyComponent extends Component {
+	render() {
+		return <div>Hello World</div>;
+	}
+}
+```
+
+# Headings
+
+# H1
+
+## H2
+
+### H3
+
+#### H4
+
+##### H5
+
+###### H6
+
+# Lists
+
+- Item 1
+- Item 2
+- Item 3
+
+# Math
+
+## Inline Math
+
+This is an example of inline math: $x^2 + y^2 = z^2$
+
+# Tables
+
+| Assignment                                                                                             | Date      |
+| ------------------------------------------------------------------------------------------------------ | --------- |
+| Report of findings of research from listed foundational work                                           | 6/10/2023 |
+| Creation of proof-of-concept training dataset for images of text.                                      | 6/25/2023 |
+| Code with experiementation via pytorch and available source code of realistic text-in-image generation | 7/20/2023 |
+
+# Lists
+
+## Ordered
+
+1. Item 1
+2. Item 2
+3. Item 3
+
+## Unordered
+
+- Item 1
+- Item 2
+- Item 3
+
+# Block Quotes
+
+> This is a block quote.
+
+# Images
+
+<CldImage
+	src={
+
+'/assets/images/dnaseq.jpg'
+    }
+	title="A sample screenshot."
+	width={251}
+	height={82}
+	alt="Five squares in a row, each with a number in them and a memory address below them."
+/>
+
+# Figures
+
+<Figure caption="A caption">
+
+<CldImage
+	src='/assets/images/dnaseq.jpg'
+	title="A sample screenshot."
+	width={251}
+	height={82}
+	alt="Five squares in a row, each with a number in them and a memory address below them."
+/>
+
+</Figure>
+
+<Figure caption="A caption">
+
+| Assignment                                                                                             | Date      |
+| ------------------------------------------------------------------------------------------------------ | --------- |
+| Report of findings of research from listed foundational work                                           | 6/10/2023 |
+| Creation of proof-of-concept training dataset for images of text.                                      | 6/25/2023 |
+| Code with experiementation via pytorch and available source code of realistic text-in-image generation | 7/20/2023 |
+
+</Figure>
