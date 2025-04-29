@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} gap-20 not-[]:antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} gap-20 max-w-7xl mx-auto not-[]:antialiased`}
       >
         <NavigationBar
         
