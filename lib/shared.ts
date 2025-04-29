@@ -4,7 +4,7 @@ import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
 import { Fragment } from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
 import { codeToHast } from 'shiki/bundle/web'
-
+import { Badge } from '@/components/ui/badge'
 export async function highlight(code: string, lang: BundledLanguage) {
   const out = await codeToHast(code, {
     lang,
@@ -17,3 +17,5 @@ export async function highlight(code: string, lang: BundledLanguage) {
     jsxs,
   }) as JSX.Element
 }
+
+

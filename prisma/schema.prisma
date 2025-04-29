@@ -94,7 +94,7 @@ model VerificationToken {
   date      DateTime @default(now())
   author    String
   description String
-  imageUrl String
+  imageUrl String?
   categories String[]
   wordCount Int
   published Boolean  @default(false)
@@ -103,3 +103,85 @@ model VerificationToken {
 
 
  }
+
+
+
+model Cv {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  phone        String
+  email        String
+  address      String
+  blurb        String
+  experience   Experience[]
+  publications Publication[]
+  education    Education[]
+  skills       Skill[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Experience {
+  id         String    @id @default(cuid())
+  company    String
+  position   String
+  location   String?
+  startDate  DateTime
+  endDate    DateTime?
+  isCurrent  Boolean   @default(false)
+  updatedAt  DateTime  @updatedAt
+  cvRelation Cv?       @relation(fields: [cvId], references: [id])
+  cvId       String?
+  duties     Duty[]
+}
+
+model Duty {
+  id           String      @id @default(cuid())
+  experienceId String?
+  title        String
+  order        Int // Used for sorting
+  Experience   Experience? @relation(fields: [experienceId], references: [id])
+  Education    Education?  @relation(fields: [educationId], references: [id])
+  educationId  String?
+}
+
+model Education {
+  id          String    @id @default(cuid())
+  school      String
+  degree      String
+  startDate   DateTime
+  endDate     DateTime
+  description String
+  Cv          Cv?       @relation(fields: [cvId], references: [id])
+  cvId        String?
+  duties      Duty[]
+}
+
+model Publication {
+  id              String   @id @default(cuid())
+  title           String
+  journal         String
+  journalInfo     String
+  publicationDate DateTime
+  doi             String
+  pmid            String
+  authors         String[]
+  Cv              Cv?      @relation(fields: [cvId], references: [id])
+  cvId            String?
+}
+
+model Skill {
+  id       String  @id @default(cuid())
+  title    String
+  category String
+  Cv       Cv?     @relation(fields: [cvId], references: [id])
+  cvId     String?
+}
+
+
+model aiStatement {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  statement String
+}

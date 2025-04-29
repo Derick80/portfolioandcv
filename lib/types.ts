@@ -1,4 +1,5 @@
 /* Mdx Blog types */
+import { User ,MdxPost} from '@prisma/client'
 import { z } from 'zod'
 
 export const BASE_URL = 'https://derickhoskinson.com'
@@ -81,3 +82,63 @@ export const targetPostSchema = z.object({
 
 export type BlogPostSlug = z.infer<typeof blogPostSchema>
 export type TargetPostId = z.infer<typeof targetPostSchema>
+
+export type PostWithRelations = MdxPost & {
+    author: User
+    categories: []
+}
+
+export interface Duty {
+    title: string
+    order: number
+}
+export interface Experience {
+    company: string
+    position: string
+    location: string | null
+    startDate: Date
+    endDate: Date | null
+    isCurrent: boolean
+    duties: Duty[]
+}
+
+export interface Skill {
+    title: string
+    category: string
+}
+
+export interface Education {
+    school: string
+    degree: string
+    startDate: Date
+    endDate: Date
+    description: string
+    duties: Duty[]
+}
+
+export interface Publication {
+    title: string
+    journal: string
+    journalInfo: string
+    publicationDate: Date
+    doi: string
+    pmid: string
+    authors: string[]
+}
+
+export interface CVData {
+    name: string
+    phone: string
+    email: string
+    address: string
+    blurb: string
+    experience: Experience[]
+    education: Education[]
+    publications: Publication[]
+    skills: Skill[]
+}
+
+
+
+
+export const aiStatment = `This application's development process integrates artificial intelligence for the provision of code completion and ideational stimuli. It is imperative to delineate that the resultant creative and intellectual property, encompassing all textual content and written materials presented within this web application, originates from my authorship. Exceptions to this authorship are explicitly noted through meticulous citation of external sources, adhering to established academic and professional standards for intellectual property attribution. This methodology ensures both the efficient utilization of AI tools and the preservation of intellectual integrity.`

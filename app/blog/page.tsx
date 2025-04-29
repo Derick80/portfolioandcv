@@ -1,9 +1,34 @@
 import React from 'react'
 import { getAllPosts } from '../actions/mdx-server-functions'
 import BlogListItem from '@/components/blog-list-item'
+import { getPosts } from '../actions/blog'
+import { Metadata } from 'next'
 
+export const metadata: Metadata = {
+    title: "Dr. Hoskinson's Blog",
+    description: 'A personal web app for Dr. Hoskinson',
+    keywords: [
+        'clinical genetics',
+        'genetics phd',
+        'acmg',
+        'variant classification',
+        'somatic',
+        'germline',
+        'tufts genetics phd'
+    ],
+    robots: {
+        index: true,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: true,
+            follow: true
+        }
+    }
+  }
+  
 export default async function Blog() {
-    const posts = await getAllPosts()
+    const posts = await getPosts()
     if (!posts.length) {
         return null
     }
