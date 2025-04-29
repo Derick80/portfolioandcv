@@ -43,21 +43,8 @@ export default async function sitemap (): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date().toISOString().split('T')[0],
             priority: 0.8
         },
-        {
-            url: getSiteUrl('/projects').href,
-            lastModified: new Date().toISOString().split('T')[0],
-            priority: 0.8
-        },
-        {
-            url: getSiteUrl('/community').href,
-            lastModified: new Date().toISOString().split('T')[0],
-            priority: 0.8
-        },
-        {
-            url: getSiteUrl('/about').href,
-            lastModified: new Date().toISOString().split('T')[0],
-            priority: 0.8
-        }
+        
+        
     ] satisfies MetadataRoute.Sitemap
 
 

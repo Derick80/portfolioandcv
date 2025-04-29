@@ -33,8 +33,10 @@ const shouldUpdate = async (): Promise<boolean> => {
     const dbPosts = await prisma.mdxPost.findMany()
 
     const dbSlugs = new Set(dbPosts.map((post) => post.slug))
-
+    console.log('here are the db slugs', dbSlugs)
     const newSlugs = new Set(posts.map((post) => post.slug))
+
+    console.log('here are the new slugs', newSlugs)
 
     // Are the new slugs similar to the old slugs?
 
@@ -44,13 +46,14 @@ const shouldUpdate = async (): Promise<boolean> => {
         const intersection = new Set([...setA].filter((x) => setB.has(x)))
         return intersection.size > 0
     }
-
-    const shouldUpdate = !similar([...dbSlugs], [...newSlugs])
+// changed the !similar to similar and that worked. Neigher myself or AI were smart enough to figure this out on our own. 
+    const shouldUpdate = similar([...dbSlugs], [...newSlugs])
     return shouldUpdate
 }
 
 const syncWithDb = async () => {
     const needsUpdating = await shouldUpdate()
+    console.log('needsUpdating', needsUpdating)
     if (!needsUpdating) {
         return { message: 'Database is already up to date' }
     }

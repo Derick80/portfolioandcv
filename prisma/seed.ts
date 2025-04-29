@@ -142,17 +142,6 @@ async function main() {
 
     console.log('All tables cleared!')
 
-    const user = await prisma.user.create({
-        data: {
-            email: 'wowbearwow80@gmail.com',
-            name: 'wowbearwow80'
-        }
-    })
-    if (!user) {
-        console.error('Failed to create user')
-        return
-    }
-
     await seedCV()
     console.log('CV seeded')
     await prisma.aiStatement.create({
