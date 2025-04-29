@@ -13,7 +13,7 @@
     "start": "next start",
     "seed_posts": "tsx scripts/sync-db.ts",
     "lint": "next lint",
-    "postinstall": "prisma db && push prisma db seed && tsx scripts/sync-db.ts"
+    "postinstall": "prisma db push && prisma db seed && tsx scripts/sync-db.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.0",
