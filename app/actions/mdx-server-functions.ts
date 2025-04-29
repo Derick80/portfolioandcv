@@ -92,3 +92,8 @@ export const getMdXData = async (dir: string) => {
         })
     )
 }
+
+/**
+ * write a function to save the frontmatter to a database. 
+ * 
+ */

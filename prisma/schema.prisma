@@ -88,3 +88,19 @@ model VerificationToken {
   @@id([identifier, token])
 }
  
+ model MdxPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  date      DateTime @default(now())
+  author    String
+  description String
+  imageUrl String
+  categories String[]
+  wordCount Int
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+ }
