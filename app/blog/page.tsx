@@ -12,8 +12,6 @@ export default async function Blog() {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
 
-    console.log(frontmatter, 'frontmatter')
-
     return (
         <div className='flex flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>
