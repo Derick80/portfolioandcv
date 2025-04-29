@@ -1,5 +1,4 @@
 import React from 'react'
-import { getAllPosts } from '../actions/mdx-server-functions'
 import BlogListItem from '@/components/blog-list-item'
 import { getPosts } from '../actions/blog'
 import { Metadata } from 'next'
@@ -29,6 +28,7 @@ export const metadata: Metadata = {
   
 export default async function Blog() {
     const posts = await getPosts()
+    console.log(posts,'posts')
     if (!posts.length) {
         return null
     }
@@ -36,7 +36,6 @@ export default async function Blog() {
     const frontmatter = posts.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
-    console.log('frontmatter', frontmatter)
     return (
         <div className='flex flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>

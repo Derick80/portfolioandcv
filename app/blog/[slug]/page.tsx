@@ -27,7 +27,6 @@ export default async function Page(props: {
     if (!post) {
         throw new Error('Post not found')
     }
-    console.log(post, 'post')
     const { rawMdx, ...rest } = post
 
     return (
