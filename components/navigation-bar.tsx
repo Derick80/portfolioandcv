@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import SignIn from "./sign-in";
 import Image from "next/image";
+import  ModeToggle  from "@/app/mode-toggle";
 
 export interface NavLink {
   label: string;
@@ -23,7 +24,6 @@ const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Resume", href: "/cv" },
   { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
 ];
 
 const MAX_MOBILE_LINKS = 2;
@@ -87,7 +87,7 @@ const NavigationBar = async () => {
           )}
         </div>
         {/* Section 3: User Profile */}
-        <div className="hidsden md:flex items-center space-x-4">
+        <div className=" md:flex items-center space-x-4">
           {session ? (
             <>
               <Image
@@ -105,6 +105,7 @@ const NavigationBar = async () => {
               <span className="text-gray-900 hidden md:block dark:text-white">
                 {session.user?.name}
               </span>
+              <ModeToggle />
             </>
           ) : (
             <SignIn />

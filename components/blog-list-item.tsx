@@ -1,4 +1,3 @@
-import { MdxCompiled } from "@/lib/types";
 import { Card,
     CardContent,
     CardDescription,
@@ -7,8 +6,8 @@ import { Card,
     CardFooter
  } from "./ui/card";
 import Link from "next/link";
-import { JSX } from "react";
 import { Badge } from "./ui/badge";
+import { Like } from "@prisma/client";
 
 
 
@@ -26,6 +25,7 @@ const BlogListItem = ({ post }:
         published: boolean;
         createdAt: Date;
         updatedAt: Date;
+        likes: Like[];
 
     }
      }
@@ -75,10 +75,12 @@ const BlogListItem = ({ post }:
                 <div className="flex flex-wrap gap-2">
                     {SplitAndSortCategories(post.categories)}
                 </div>
-            </CardContent>
-            <CardFooter>
                 <p>{post.wordCount} words</p>
                 <p>{post.author}</p>
+            </CardContent>
+            <CardFooter>
+                
+               
             </CardFooter>
 
         </Card>

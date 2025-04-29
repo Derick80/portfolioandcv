@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   
 export default async function Blog() {
     const posts = await getPosts()
+    console.log(posts,'posts')
     if (!posts.length) {
         return null
     }

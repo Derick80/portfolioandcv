@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import HeroSection from "@/components/hero-section";
 import { Metadata } from "next";
+import  ModeToggle  from "./mode-toggle";
 
 
 export const metadata: Metadata = {
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
       'variant classification',
       'somatic',
       'germline',
-      'tufts genetics phd'
+      'tufts genetics phd',
+      'derick hoskinson',
   ],
   robots: {
       index: true,
