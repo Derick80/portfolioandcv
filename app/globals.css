@@ -111,13 +111,13 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-
+/* applied !min-w-full to correct for layout shift using shadcn dropdown menu */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground !min-w-full;
   }
   code {
     @apply p-2 rounded-md;

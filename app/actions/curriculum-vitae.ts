@@ -1,23 +1,22 @@
-import prisma from "@/lib/prisma"
-
+import prisma from "@/lib/prisma";
 
 export const getCV = async () => {
-    const cv = await prisma.cv.findFirst({
+  const cv = await prisma.cv.findFirst({
+    include: {
+      education: {
         include: {
-            education: {
-                include: {
-                    duties: true
-                }
-            },
-            experience: {
-                include: {
-                    duties: true
-                }
-            },
-            publications: true,
-            skills: true,
-        }
-    })
+          duties: true,
+        },
+      },
+      experience: {
+        include: {
+          duties: true,
+        },
+      },
+      publications: true,
+      skills: true,
+    },
+  });
 
-    return cv
-}
+  return cv;
+};

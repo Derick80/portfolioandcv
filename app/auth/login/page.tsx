@@ -1,9 +1,5 @@
 import SignIn from "@/components/sign-in";
 
-
 export default async function Login() {
-
-    return(
-        <SignIn />
-    )
+  return <SignIn />;
 }
