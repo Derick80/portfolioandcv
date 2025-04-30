@@ -18,13 +18,12 @@ export default function HeroSection() {
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">Hi, I&apos;m Derick</h1>
               <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                Passionate clinical geneticist &  developer with a keen interest in bioinformatics and variant classification in a clinical context. 
+                Passionate clinical geneticist keen on leveraging my clinincal genetics background to develop new test improve patient care. 
               </p>
             </div>
             <div className="space-y-4 md:space-y-6">
               <p className="max-w-[600px] text-gray-500 dark:text-gray-400">
-                With over 8 years of experience in clinical genetics and 3+ years of experience developing FDA approved devices, new next generation sequencing tests, and variant support for the production team. I specialize in using variant science to develop new tests, ready tests for FDA approval, and provide evidence-baed support variant classfication and reporting. My approach combines genetics expertise with
-                creative problem-solving and data science to deliver solutions that will impact a patients journey. 
+              With 8+ years in clinical genetics I have developed FDA-approved devices and next-generation sequencing tests. I specialize in using variant science for test development, FDA approval readiness, and variant classification. My approach combines genetics expertise with problem-solving and data science to deliver impactful solutions for patients. 
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Button className="inline-flex h-10 items-center justify-center" asChild>
