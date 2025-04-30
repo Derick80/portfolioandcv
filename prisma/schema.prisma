@@ -200,3 +200,11 @@ model aiStatement {
   updatedAt DateTime @updatedAt
   statement String
 }
+
+
+model Visitor {
+  id String @id @default(cuid())
+  cookieId String @unique
+  firstVisit DateTime @default(now())
+  lastVisit DateTime @updatedAt
+}

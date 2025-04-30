@@ -9,9 +9,11 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
-import SignIn from "./sign-in";
 import ModeToggle from "@/app/mode-toggle";
 import { UserMenu } from "./user-menu";
+import {unstable_ViewTransition as ViewTransition} from "react";
+
+// not sure if the view transition is working
 
 export interface NavLink {
   label: string;
@@ -33,7 +35,7 @@ const NavigationBar = async () => {
   const dropdownLinks = navLinks.slice(MAX_MOBILE_LINKS);
 
   return (
-    <nav className="w-full max-w-7xl mx-auto bg-primary-foreground  border-b border-gray-200 dark:border-gray-700">
+    <nav className="w-full max-w-6xl mx-auto bg-primary-foreground rounded-lg border-b border-accent">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Section 1: Logo */}
         <div className="flex-shrink-0">
@@ -48,18 +50,21 @@ const NavigationBar = async () => {
         {/* Section 2: Navigation Links */}
         <div className="hidden md:flex space-x-4">
           {navLinks.map((link) => (
-            <Link
+            <ViewTransition key={link.href}>
+  <Link
               key={link.label}
               href={link.href}
               className="text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400"
             >
               {link.label}
-            </Link>
+            </Link>            </ViewTransition>
+            
           ))}
         </div>
         {/* Mobile Links + Dropdown */}
         <div className="flex md:hidden items-center space-x-2 justify-center">
           {mobileLinks.map((link) => (
+
             <Link
               key={link.href}
               href={link.href}
