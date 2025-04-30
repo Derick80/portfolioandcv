@@ -18,7 +18,7 @@ const UniqueVisitors: React.FC = () => {
   }
 
   return (
-    <Card className="max-w-xs mx-auto mt-6">
+    <Card className="hidden max-w-xs mx-auto mt-6">
       <CardContent className="text-center">
         <p className="text-sm text-gray-500 dark:text-gray-400">Unique Visitors</p>
         <p className="mt-1 text-2xl font-bold">{count}</p>
