@@ -1,5 +1,4 @@
 import Link from "next/link";
-import CldImage from "./client-cloudinary";
 import { auth } from "@/auth";
 import { BrandIcon } from "@/lib/icons/brand-icon";
 import {
@@ -11,8 +10,8 @@ import {
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import SignIn from "./sign-in";
-import Image from "next/image";
-import  ModeToggle  from "@/app/mode-toggle";
+import ModeToggle from "@/app/mode-toggle";
+import { UserMenu } from "./user-menu";
 
 export interface NavLink {
   label: string;
@@ -88,28 +87,11 @@ const NavigationBar = async () => {
         </div>
         {/* Section 3: User Profile */}
         <div className=" md:flex items-center space-x-4">
-          {session ? (
-            <>
-              <Image
-                key={session.user?.id}
-                src={
-                  session?.user?.image
-                    ? session.user.image
-                    : "/assets/images/placeholder-user.jpg"
-                }
-                alt="ugh"
-                className="w-8 h-8 rounded-full"
-                width={32}
-                height={32}
-              />
-              <span className="text-gray-900 hidden md:block dark:text-white">
-                {session.user?.name}
-              </span>
-              <ModeToggle />
-            </>
-          ) : (
-            <SignIn />
-          )}
+          <UserMenu user={session?.user} />
+        </div>
+        {/* Section 4: Theme Toggle */}
+        <div className="hidden md:flex items-center">
+          <ModeToggle />
         </div>
       </div>
     </nav>

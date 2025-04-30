@@ -1,15 +1,19 @@
+import { signIn } from "@/auth";
+import { Button } from "./ui/button";
+import { DiscordLogoIcon } from "@radix-ui/react-icons";
 
-import { signIn } from "@/auth"
- 
 export default function SignIn() {
   return (
     <form
       action={async () => {
-        "use server"
-        await signIn("discord")
+        "use server";
+        await signIn("discord");
       }}
     >
-      <button type="submit">Signin with Discord</button>
+      <Button type="submit">
+        <DiscordLogoIcon />
+        <span className="ml-2">Sign in with Discord</span>
+      </Button>
     </form>
-  )
-} 
+  );
+}

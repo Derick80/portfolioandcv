@@ -14,29 +14,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
-  description: 'A personal web app for Dr. Hoskinson',
+  description: "A personal web app for Dr. Hoskinson",
   keywords: [
-      'clinical genetics',
-      'genetics phd',
-      'acmg',
-      'variant classification',
-      'somatic',
-      'germline',
-      'tufts genetics phd'
+    "clinical genetics",
+    "genetics phd",
+    "acmg",
+    "variant classification",
+    "somatic",
+    "germline",
+    "tufts genetics phd",
   ],
   robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
       index: true,
       follow: true,
-      nocache: true,
-      googleBot: {
-          index: true,
-          follow: true
-      }
-  }
-}
+    },
+  },
+};
 
 export default function RootLayout({
   children,
@@ -45,22 +44,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      
       <body
         className={`${geistSans.variable} ${geistMono.variable} gap-20 max-w-7xl mx-auto not-[]:antialiased`}
-      ><ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-        <NavigationBar
-        
-        />
-        {children}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NavigationBar />
+          <main className="flex flex-col gap-[32px] max-w-6xl mx-auto row-start-2 items-center sm:items-start">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
-   
     </html>
   );
 }
