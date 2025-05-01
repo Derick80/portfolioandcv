@@ -25,7 +25,7 @@ model User {
   sessions      Session[]
   userImages    UserImage[]
   likes         Like[]
- 
+ chats         Chat[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -207,4 +207,21 @@ model Visitor {
   cookieId String @unique
   firstVisit DateTime @default(now())
   lastVisit DateTime @updatedAt
+}
+
+model Chat {
+  id String @id @default(cuid())
+  userId String
+  title String
+  createdAt DateTime @default(now())
+  messages Message[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model Message {
+  id String @id @default(cuid())
+  chatId String
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  role String  // "user" or "assistant"
+  content String
+  createdAt DateTime @default(now())
 }
