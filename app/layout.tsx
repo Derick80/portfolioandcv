@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavigationBar from "@/components/navigation-bar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { unstable_ViewTransition as ViewTransition } from "react";
+import UniqueVisitors from "@/components/unique-visitors";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,8 +56,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavigationBar />
+          <UniqueVisitors />
           <main className="flex flex-col gap-[32px] max-w-6xl mx-auto row-start-2 items-center sm:items-start">
+            
             {children}
+
           </main>
         </ThemeProvider>
       </body>
