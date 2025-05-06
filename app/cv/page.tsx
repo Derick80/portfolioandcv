@@ -1,7 +1,6 @@
 import { getCV } from "../actions/curriculum-vitae";
 import CVDisplay from "./cv-display";
 import type { Metadata, ResolvingMetadata } from "next";
-import { unstable_ViewTransition as ViewTransition } from "react";
 // Generate dynamic metadata based on CV data
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function generateMetadata(

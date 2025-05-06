@@ -14,7 +14,7 @@ const UniqueVisitors: React.FC = () => {
   }, []);
 
   if (count === null) {
-    return <p className="text-center py-4">Loading visitor count…</p>;
+    return <p className="hidden text-center py-4">Loading visitor count…</p>;
   }
 
   return (

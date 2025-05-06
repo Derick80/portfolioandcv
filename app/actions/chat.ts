@@ -183,6 +183,7 @@ Kanji Input: ${message}`
 
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const saveMessage = async (prevState:any,formData:FormData) => {
 const validatedData = messageSchema.safeParse({
     chatId: formData.get("chatId"),

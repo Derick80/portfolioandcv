@@ -1,7 +1,6 @@
 import { auth } from "@/auth"
 import { getChatById } from "../actions/chat"
 import { redirect } from "next/navigation"
-import DisplayQuery from "./kanji-display"
 
 const MessageDisplay = async ({chatId}:{
     chatId:string

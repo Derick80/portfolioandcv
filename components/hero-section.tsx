@@ -1,13 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, GitBranchIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import CldImage from "./client-cloudinary";
 import ContactForm from "./about/contact-form";
 import {
   LinkedInLogoIcon,
   GitHubLogoIcon,
-  TwitterLogoIcon,
 } from "@radix-ui/react-icons";
 export default function HeroSection() {
   return (
@@ -21,7 +19,7 @@ export default function HeroSection() {
               </h1>
               <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                 Passionate clinical geneticist keen on leveraging my clinincal
-                genetics background to develop new test improve patient care.
+                genetics background to develop new tools to improve patient care.
               </p>
             </div>
             <div className="space-y-4 md:space-y-6">
