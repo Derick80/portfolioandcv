@@ -126,6 +126,12 @@ export interface Publication {
   authors: string[];
 }
 
+export interface Conferences {
+  title: string;
+  conference: string;
+  authors: string[];
+}
+
 export interface CVData {
   name: string;
   phone: string;
@@ -136,13 +142,16 @@ export interface CVData {
   education: Education[];
   publications: Publication[];
   skills: Skill[];
+  conferences: Conferences[];
 }
 
 export const aiStatment = `This application's development process integrates artificial intelligence for the provision of code completion and ideational stimuli. It is imperative to delineate that the resultant creative and intellectual property, encompassing all textual content and written materials presented within this web application, originates from my authorship. Exceptions to this authorship are explicitly noted through meticulous citation of external sources, adhering to established academic and professional standards for intellectual property attribution. This methodology ensures both the efficient utilization of AI tools and the preservation of intellectual integrity.`;
 
+
+
 /* kanji chat section */
 
-export type KanjiChatResponse = {
+type InputWord = {
   kanji: string;
   kana: string;
   meaning: string;
@@ -151,14 +160,15 @@ export type KanjiChatResponse = {
   sentence_jp: string;
   sentence_en: string;
   queryKanji: boolean;
-  relatedBy: {
-    kanji: string;
-    kana: string;
-    meaning: string;
-    jlpt: number;
-    stroke_number: number;
-    sentence_jp: string;
-    sentence_en: string;
-    queryKanji: boolean;
-  }[];
+  queryKanjiCharacter?: string;
+  parentId?: string;
+  additional_vocab?: InputWord[];
+  
+}
+
+
+export type KanjiChatResponse = {
+  input_word: InputWord;
+  additional_vocab: InputWord[];
 };
+

@@ -81,12 +81,12 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
       >
         {/* Header */}
         <div className="mb-8 text-center print:mb-6">
-          <h1 className="text-3xl text-primary font-bold mb-2 print:text-2xl">
+          <h1 className="text-3xl text-black font-bold mb-2 print:text-2xl">
             {cvData.name === "first_cv"
               ? "Derick Hoskinson, Ph.D."
               : cvData.name}
           </h1>
-          <div className="text-muted-foreground space-y-1">
+          <div className="text-black space-y-1">
             <p>{cvData.address}</p>
             <p>
               {cvData.phone} | {cvData.email}
@@ -94,41 +94,42 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
           </div>
         </div>
 
-        <Separator className="my-6 print:my-4" />
+        <Separator className="my-6 print:my-4 bg-black" />
+
 
         {/* Skills Section */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-xl font-bold mb-4 text-primary print:text-lg print:mb-3">
+          <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
             Skills & Expertise
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:gap-3">
-            {Object.entries(skillsByCategory).map(([category, skills]) => (
+            {Object.entries(skillsByCategory).sort(([categoryA],[categoryB])=>categoryA.localeCompare(categoryB) ).map(([category, skills]) => (
               <div key={category}>
-                <h3 className="text-lg font-bold mb-2 print:text-base">
+                <h3 className="text-lg text-black font-bold mb-2 print:text-base">
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.map((skill, index) => (
-                    <Badge
-                      key={index}
-                      variant="default"
-                      className="text-sm print:text-xs"
-                    >
-                      {skill.title}
-                    </Badge>
-                  ))}
+                {skills.sort((a, b) => a.title.localeCompare(b.title)).map((skill) => (
+                      <Badge
+                        key={skill.title}
+                        variant="default"
+                        className="text-sm print:text-xs"
+                      >
+                        {skill.title}
+                      </Badge>
+                    ))}
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <Separator className="my-6 print:my-4" />
+        <Separator className="my-6 print:my-4 bg-black" />
 
         {/* Experience Section */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-xl font-bold mb-4 text-primary print:text-lg print:mb-3">
+          <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
             Professional Experience
           </h2>
 
@@ -136,7 +137,7 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
             <div key={index} className="mb-6 print:mb-4 last:mb-0">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                 <div>
-                  <h3 className="font-bold text-lg print:text-base">
+                  <h3 className="font-bold text-black text-lg print:text-base">
                     {job.position}
                   </h3>
                   <p className="text-gray-700">{job.company}</p>
@@ -161,16 +162,16 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
           ))}
         </section>
 
-        <Separator className="my-6 print:my-4" />
+        <Separator className="my-6 print:my-4 bg-black" />
 
         {/* Education Section */}
         <section className="mb-8 print:mb-6">
-          <h2 className="text-xl font-bold mb-4 text-primary print:text-lg print:mb-3">
+          <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
             Education
           </h2>
 
           {cvData.education.map((edu, index) => (
-            <div key={index} className="mb-6 print:mb-4 last:mb-0">
+            <div key={index} className="mb-6 print:mb-4 last:mb-0 text-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                 <div>
                   <h3 className="font-bold text-lg print:text-base">
@@ -178,7 +179,7 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
                   </h3>
                   <p className="text-gray-700">{edu.school}</p>
                 </div>
-                <p className="text-muted-foreground text-sm mt-1 sm:mt-0 print:text-xs">
+                <p className="text text-sm mt-1 sm:mt-0 print:text-xs">
                   {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
                 </p>
               </div>
@@ -202,11 +203,34 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
           ))}
         </section>
 
-        <Separator className="my-6 print:my-4" />
+        <Separator className="my-6 print:my-4 bg-black" />
+
+  {/* Conferences Section */}
+  <section className="mb-8 print:mb-6 text-black space-y-4">
+          <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
+            Conferences
+          </h2>
+          {
+            cvData?.conferences?.map((conf) => (
+              <div key={conf.title} className="text-sm">
+                        <p className="font-medium">{conf.title}</p>
+                        <p className="text-gray-700">
+                          {conf.conference}
+                        </p>
+                        <p className="text-gray-700">
+                          {conf.authors.join(", ")}
+                        </p>
+
+                      </div>
+            ))
+          }
+          </section>
+
+          <Separator className="my-6 print:my-4 bg-black" />
 
         {/* Publications Section */}
-        <section className="mb-8 print:mb-6">
-          <h2 className="text-xl font-bold mb-4 text-primary print:text-lg print:mb-3">
+        <section className="mb-8 print:mb-6 text-black">
+          <h2 className="text-xl font-bold mb-4 print:text-lg print:mb-3">
             Publications
           </h2>
 
@@ -229,11 +253,11 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
                         <p className="text-gray-700">
                           {pub.authors.join(", ")}
                         </p>
-                        <p className="text-muted-foreground">
+                        <p className="">
                           {pub.journal} {pub.journalInfo}
                         </p>
                         {pub.doi && (
-                          <p className="text-muted-foreground">
+                          <p className="">
                             DOI: {pub.doi}
                           </p>
                         )}

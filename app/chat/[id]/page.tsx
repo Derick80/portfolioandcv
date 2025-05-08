@@ -26,7 +26,7 @@ export default async function Page(props: {
   const userId = session?.user?.id;
   if (!userId) redirect("/auth/login");
   const chat = await getChatById(id, userId);
-  console.log(chat, "chat");
+
   if (!chat) {
     return (
       <div className="container flex flex-col items-center justify-center h-screen">
@@ -35,17 +35,14 @@ export default async function Page(props: {
       </div>
     );
   }
-  // console.log(chat, "chat")
+  console.log(chat, "chat")
   return (
-    <div className="container border mx-auto flex flex-col items-center ">
-      <h1>Page</h1>
+    <div className="container  mx-auto flex flex-col items-center ">
       <Card className="w-full  mx-auto mt-4">
         <CardHeader>
-          <CardTitle>Chat ID: {chat.id}</CardTitle>
           <CardDescription>Chat Title: {chat.title}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="mt-4 text-lg">User ID: {userId}</p>
 
           <MessageDisplay chatId={id} />
         </CardContent>
@@ -53,7 +50,6 @@ export default async function Page(props: {
           <ChatForm chatId={id} userId={userId} />
         </CardFooter>
       </Card>
-      <MessageDisplay chatId={id} />
     </div>
   );
 }

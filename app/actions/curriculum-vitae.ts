@@ -15,6 +15,7 @@ export const getCV = async () => {
       },
       publications: true,
       skills: true,
+      conferences: true,
     },
   });
 
