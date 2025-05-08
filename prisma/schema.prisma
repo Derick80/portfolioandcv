@@ -225,3 +225,18 @@ model Message {
   content String
   createdAt DateTime @default(now())
 }
+
+
+model Kanji {
+  id String @id @default(cuid())
+  character String
+  meaning String
+kana String
+strokeCount Int
+jpSentence String
+sentenceTranslation String
+queryKanji   Boolean @default(false)
+  jlptLevel Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

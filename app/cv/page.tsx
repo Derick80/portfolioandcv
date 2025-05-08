@@ -43,9 +43,8 @@ export default async function CVPage() {
   // Convert Date properties to strings
 
   return (
-   <div>
-        <CVDisplay cvData={cv} />
-   </div>
-    
+    <div>
+      <CVDisplay cvData={cv} />
+    </div>
   );
 }

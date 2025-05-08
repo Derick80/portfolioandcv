@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import ModeToggle from "@/app/mode-toggle";
 import { UserMenu } from "./user-menu";
-import {unstable_ViewTransition as ViewTransition} from "react";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 // not sure if the view transition is working
 
@@ -51,20 +51,19 @@ const NavigationBar = async () => {
         <div className="hidden md:flex space-x-4">
           {navLinks.map((link) => (
             <ViewTransition key={link.href}>
-  <Link
-              key={link.label}
-              href={link.href}
-              className="text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400"
-            >
-              {link.label}
-            </Link>            </ViewTransition>
-            
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400"
+              >
+                {link.label}
+              </Link>{" "}
+            </ViewTransition>
           ))}
         </div>
         {/* Mobile Links + Dropdown */}
         <div className="flex md:hidden items-center space-x-2 justify-center">
           {mobileLinks.map((link) => (
-
             <Link
               key={link.href}
               href={link.href}
