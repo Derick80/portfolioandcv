@@ -171,7 +171,10 @@ export const skills = [
     title: "FDA Submissions",
     category: "Core Expertise",
   },
-
+  {
+    title: "Variant Classification",
+    category: "Core Expertise",
+  },
   {
     title: "R",
     category: "Programming Languages",
@@ -181,7 +184,7 @@ export const skills = [
     category: "Programming Languages",
   },
   {
-    title: "JavaScript",
+    title: "JavaScript/Typescript",
     category: "Programming Languages",
   },
   {
@@ -193,11 +196,24 @@ export const skills = [
     category: "Tools & Databases",
   },
   {
+    title: "COSMIC",
+    category: "Tools & Databases",
+
+  },
+  {
+    title: "OncoKB",
+    category: "Tools & Databases",
+  },
+  {
     title: "HGMD",
     category: "Tools & Databases",
   },
   {
-    title: "Project Management",
+title:"BigQuery",
+category:"Tools & Databases"
+  },
+  {
+    title: "Team Management",
     category: "Project Management",
   },
   {
@@ -443,6 +459,38 @@ export const publication = [
     ],
   },
 ];
+
+export const conferences = [
+  {
+    title:"Comprehensive Whole Genome Sequencing (WGS) Assay Provides Diagnostic Insight into Clinically Relevant Genomic Alterations Across Myeloid Malignancies",
+    conference: "AACR: American Association FOR Cancer Research 2025",
+    authors:[
+      "Robert Huether PhD",
+      "Derick Hoskinson",
+      "Pavana Anur",
+      "Raul Torres PhD",
+      "Karl R. Beutner",
+      "Kristiyana Kaneva",
+      "Yan Yang",
+      "Kelly A. Potts",
+      "Andrew Frazier",
+      "Iris Braunstein",
+      "Brett Mahon MD",
+      "Michael A. Thompson MD PhD",
+      "Kate Sasser, PhD",
+      "Halla Nimeiri, MD",
+      "Lewis J. Kraft, PhD",
+      "Francisco M. De La Vega",
+      "Guillermo Garcia-Manero, MD"
+    ]
+  },
+  {
+    title:"Detection of KMT2A Partial Tandem Duplication (PTD) in AML by Whole Genome Sequencing (WGS): Addressing Limitations of Traditional Techniques in the Era of Revumenib Approval",
+    conference: "ASCO: American Society of Clinical Oncology 2025",
+    authors:[
+      "Robert Huether", "Derick Hoskinson", "Pavana Anur", "Raul Torres", "Karl R. Beutner", "Kristiyana Kaneva", "Yan Yang", "Kelly A. Potts", "Andrew Frazier", "Iris Braunstein", "Brett Mahon", "Michael A. Thompson", "Kate Sasser", "Halla Nimeiri", "Lewis J. Kraft", "Francisco M. De La Vega",  "Alejandro Marinos Velarde"]
+  }
+]
 export const cvData = {
   name: "first_cv",
   phone: "312-871-8067",
@@ -453,4 +501,5 @@ export const cvData = {
   education: education,
   publications: publication,
   skills: skills,
+  conferences: conferences,
 };

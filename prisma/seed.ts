@@ -29,6 +29,13 @@ async function seedCV() {
           authors: publication.authors,
         })),
       },
+      conferences:{
+        create: cvData.conferences.map((conference) => ({
+          title: conference.title,
+          conference: conference.conference,
+          authors: conference.authors,
+        })),
+      }
     },
   });
 

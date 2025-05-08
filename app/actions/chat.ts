@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import { z } from "zod"
 import OpenAI from 'openai'
+import { KanjiChatResponse } from "@/lib/types"
+import { revalidatePath } from 'next/cache'
 
 
 const openai_key = process.env.OPENAI_API_KEY
@@ -61,7 +63,7 @@ export const getUserChatList = async (
 
 
 export const getChatById = async (chatId: string,userId:string) => {
-    return await prisma.chat.findUnique({
+    const messages = await prisma.chat.findUnique({
         where: {
             id: chatId,
             userId: userId,
@@ -74,7 +76,11 @@ export const getChatById = async (chatId: string,userId:string) => {
             },
         },
     })
-
+    if (!messages) {
+        console.error("Chat not found");
+        return;
+    }
+    return messages
 }
 
 const messageSchema = z.object({
@@ -93,13 +99,15 @@ export const saveAIResponse = async ({aiResponse,
     userId: string,
 })=>{
     // Implement the logic to save the AI response to the database
+    console.log(aiResponse, "ai response")
     const parsed = JSON.parse(aiResponse)
+    console.log(parsed, "parsed")
     const { input_word, additional_vocab } = parsed
     // console.log(parsed, "parsed")
     const message = await prisma.message.create({
         data: {
             chatId,
-            content: JSON.stringify(input_word),
+            content: JSON.stringify(parsed),
             role: 'ai',
         },
     })
@@ -107,16 +115,65 @@ export const saveAIResponse = async ({aiResponse,
         console.error("Message not created");
         return;
     }
-    // Save additional vocab if needed
-    for (const vocab of additional_vocab) {
-        await prisma.message.create({
-            data: {
-                chatId,
-                content: JSON.stringify(vocab),
-                role: 'ai',
-            },
-        })
+    // Save the AI response to the database
+    const saved = await saveKanjiResponse({
+        kanji: parsed,
+    })
+    console.log(saved, "saved kanji response")
+    if (!saved) {
+        console.error("Kanji response not saved");
+        return;
     }
+    return {
+        response: 'AI response saved successfully',
+        success: true,
+        saved,
+    }
+}
+
+
+export const saveKanjiResponse = async ({
+    kanji,
+   
+    
+}:{
+    kanji:KanjiChatResponse
+}) => {
+
+    const { input_word, additional_vocab } = kanji
+
+    await prisma.kanji.create({
+        data: {
+            kanji: input_word.kanji,
+            kana: input_word.kana,
+            meaning: input_word.meaning,
+            jlpt: input_word.jlpt,
+            strokeNumber: input_word.stroke_number,
+            sentenceJp: input_word.sentence_jp,
+            sentenceEn: input_word.sentence_en,
+            queryKanji: input_word.queryKanji,
+            queryKanjiCharacter: input_word.queryKanjiCharacter,
+            related: {
+                create: additional_vocab.map((vocab) => ({
+                    kanji: vocab.kanji,
+                    kana: vocab.kana,
+                    meaning: vocab.meaning,
+                    jlpt: vocab.jlpt,
+                    strokeNumber: vocab.stroke_number,
+                    sentenceJp: vocab.sentence_jp,
+                    sentenceEn: vocab.sentence_en,
+                    queryKanji: vocab.queryKanji,
+                    queryKanjiCharacter: vocab.queryKanjiCharacter,
+                })),
+            },
+        },
+    })
+
+    return {
+        response: 'Kanji response saved successfully',
+        success: true,
+    }
+
 }
 export const generateAiResponse = async ({
     message,
@@ -134,7 +191,7 @@ export const generateAiResponse = async ({
 Generate valid JSON with this shape:
 {
   input_word: {kanji, kana, meaning, jlpt, stroke_number, sentence_jp, sentence_en, queryKanji:true},
-  additional_vocab: Array<4 objects>(same keys, queryKanji:false)
+  additional_vocab: Array<4 objects>(same keys, queryKanji:false,queryKanjiCharacter: kanji)
 }
 
 Return ONLY JSON.
@@ -230,10 +287,11 @@ if(!created){
 }
 // send the message to the ai.  So write the function to send the message to the ai.
 
-    return await generateAiResponse({
+     await generateAiResponse({
         message: content,
         chatId,
         userId,
     })
     
+    return revalidatePath(`/chat/${chatId}`)
 }

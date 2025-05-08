@@ -58,9 +58,7 @@ export default function RootLayout({
           <NavigationBar />
           <UniqueVisitors />
           <main className="flex flex-col gap-[32px] max-w-6xl mx-auto row-start-2 items-center sm:items-start">
-            
             {children}
-
           </main>
         </ThemeProvider>
       </body>
