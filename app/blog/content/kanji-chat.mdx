@@ -1,0 +1,112 @@
+---
+title: "Kanji Chat"
+author: Derick Hoskinson PhD
+date: 2025-05-08
+published: true
+description: I present a new project that I am working on. 
+imageUrl: https://res.cloudinary.com/dch-photo/image/upload/v1746745401/Screenshot_2025-05-08_at_5.59.25_PM_w6b0fu.png
+categories: [Kanji, AI, Coding]
+---
+
+# Kanji Chat
+
+## Introduction
+I have been using the python interface to interact with the OpenAi API and I was curious about using it in a javascript project. I have also been studying Japanese and I thought it would be fun to create a chat bot that could provide some interesting information on a word of interest. 
+
+## The Project
+I have created a simple chat bot that can provide information on a word of interest. The AI can provide the following information:
+1. **Kanji**: The kanji for the word.
+2. **meaning**: The meaning of the word.
+3. **Kana**: The kana for the word.
+4. **Example**: An example sentence using the word.
+5. **Example Translation**: The translation of the example sentence.
+6. **stroke number**: The stroke number of the kanji.
+7. **JLPT**: The JLPT level of the kanji.
+8. **Related words**: A list of related words
+
+## The Components
+The project is made up of the following components:
+1. **ChatForm**: The chat form that allows the user to enter a word of interest.
+2. **Chat**: The chat component that displays the conversation.
+
+## Under the Hood
+The project uses the following technologies:
+1. **React**: The front end is built using React.
+2. **Tailwind CSS**: The project uses Tailwind CSS for styling.
+3. **OpenAi API**: The project uses the OpenAi API to provide the information on the word of interest.
+4. **Next.js**: The project is built using Next.js.
+5. **Typescript**: The project is built using Typescript.
+6. **Zod**: The project uses Zod for validation.
+7. **Prisma**: The project uses Prisma for the database.
+
+## How it works
+The user enters a word of interest in the chat form and the chat component displays the conversation. When the form is submitted the word is sent to the OpenAI API where it retrieves the information on the word and some related words. That informatioon is parsed and saved to the database. Then the chat messages are displayed in the chat component.
+The Displayed messages are visualized using a Card component from Shadcn/ui. 
+## Some code or discussion
+
+I used the following code to generate a response from OpenAi. 
+
+```typescript 
+export const generateAiResponse = async ({
+    message,
+    chatId,
+    userId,
+}:{
+    message: string,
+    chatId: string,
+    userId: string,
+
+    
+}) => {
+    // Implement the logic to send the message to the AI and get the response
+    const prompt = `
+Generate valid JSON with this shape:
+{
+  input_word: {kanji, kana, meaning, jlpt, stroke_number, sentence_jp, sentence_en, queryKanji:true},
+  additional_vocab: Array<4 objects>(same keys, queryKanji:false,queryKanjiCharacter: kanji)
+}
+
+Return ONLY JSON.
+
+Kanji Input: ${message}`
+   
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-4o',
+            messages: [
+                { role: 'system', content: 'You are a JSON-only assistant.' },
+                { role: 'user', content: prompt }
+            ],
+            temperature: 0
+        })
+// save the response to the database
+         const generatedresponse = await saveAIResponse({
+            aiResponse: cleanedRaw, 
+            chatId: chatId,
+            userId: userId,
+        })
+
+        return {
+            response: cleanedRaw,
+            success: true
+        }
+
+}
+```
+
+## Screenshot
+
+<CldImage
+src="https://res.cloudinary.com/dch-photo/image/upload/v1746745401/Screenshot_2025-05-08_at_5.59.25_PM_w6b0fu.png"
+alt="Kanji Chat"
+width={500}
+height={500}
+className="rounded-lg"
+priority
+sizes="(max-width: 500px) 100vw, 500px"
+placeholder="blur"
+blurDataURL="https://res.cloudinary.com/dch-photo/image/upload/v1746745401/Screenshot_2025-05-08_at_5.59.25_PM_w6b0fu.png"/>
+
+
+## Discussion 
+
+This was a fun exercise in learning how to use the OpenAI API in a web application using typescript. I may add more features if I feel so inclined. 
