@@ -255,3 +255,5 @@ model Kanji {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
