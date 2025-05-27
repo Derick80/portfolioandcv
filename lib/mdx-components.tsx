@@ -1,5 +1,5 @@
 import CldImage from "@/components/client-cloudinary";
-import { ImageProps } from "next/image";
+import Image, { ImageProps } from "next/image";
 import {
   Children,
   createElement,
@@ -237,10 +237,8 @@ export const MdxComponents = {
     CldImage,
     img: ({ src, alt, ...rest }: ImageProps) => {
       return (
-        <CldImage
+        <Image
           src={src ? src.toString() : "/assets/images/placeholder-user.jpg"}
-          rawTransformations={["f_auto"]}
-          format="webp"
           alt={alt}
           width={500}
           height={500}
