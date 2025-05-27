@@ -45,7 +45,9 @@ const inputWord = z.object({
 })
 
 export const getGPTResponse = async (
-    prevState:any,formData:FormData
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prevState:any,
+    formData:FormData
    
     ) => {
 
