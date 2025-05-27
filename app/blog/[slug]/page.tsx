@@ -31,12 +31,8 @@ export default async function Page(props: {
 
   return (
     <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
-      <PostOverlay slug={rest.slug} />
       <Suspense fallback={<>Loading...</>}>
-        <h1 className="text-3xl font-bold">{rest.title}</h1>
-        <p>
-          {rest.slug}
-        </p>
+       
         {rawMdx}
       </Suspense>
     </article>
