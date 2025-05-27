@@ -10,6 +10,7 @@ type PostOverlayProps = {
 const PostOverlay = (
     {slug}: PostOverlayProps
 )=>{
+    console.log("PostOverlay rendered for slug:", slug);
     return(
         <div 
        className={cn(

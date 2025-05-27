@@ -2,6 +2,7 @@ import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 import { blogPostSchema } from "@/lib/types";
 import { Suspense } from "react";
 import PostOverlay from "./post-overlay";
+import { z } from "zod";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -12,28 +13,36 @@ export async function generateStaticParams() {
     params: { slug: post.slug },
   }));
 }
+
+const postIdSchema = z.object({
+  slug: z.string(),
+});
+
 export default async function Page(props: {
   params: Promise<{
     slug: string;
   }>;
 }) {
-  const params = await props.params;
-
-  const { slug } = blogPostSchema.parse(params);
-  if (!slug) {
-    throw new Error("No slug provided");
+  const {slug} = await props.params;
+  if(!slug) {
+    throw new Error("Slug is required");
   }
   const post = await getPostBySlug(slug);
   if (!post) {
     throw new Error("Post not found");
   }
-  const { rawMdx, ...rest } = post;
+
+
 
   return (
     <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
+      <PostOverlay slug={post.slug} />
       <Suspense fallback={<>Loading...</>}>
-       
-        {rawMdx}
+        <h1 className="text-3xl font-bold">{post.title}</h1>
+        <p>
+          {post.slug}
+        </p>
+        {post.rawMdx}
       </Suspense>
     </article>
   );
