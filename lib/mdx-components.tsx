@@ -234,7 +234,6 @@ export const MdxComponents = {
     tr: TableRow,
     td: TableCell,
     Figure,
-    CldImage,
     img: ({ src, alt, ...rest }: ImageProps) => {
       return (
         <Image
