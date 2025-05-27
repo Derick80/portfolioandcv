@@ -1,6 +1,7 @@
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 import { blogPostSchema } from "@/lib/types";
 import { Suspense } from "react";
+import PostOverlay from "./post-overlay";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -29,9 +30,13 @@ export default async function Page(props: {
   const { rawMdx, ...rest } = post;
 
   return (
-    <article className="prose relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle dark:prose-invert md:px-0">
+    <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
+      <PostOverlay slug={rest.slug} />
       <Suspense fallback={<>Loading...</>}>
         <h1 className="text-3xl font-bold">{rest.title}</h1>
+        <p>
+          {rest.slug}
+        </p>
         {rawMdx}
       </Suspense>
     </article>
