@@ -162,7 +162,6 @@ const CodeBlock = async ({
 
   if (isCodeBlock) {
     const lang = className.split(" ")[0]?.split("-")[1] ?? "";
-    console.log(lang);
     if (!lang) {
       return (
         <code
@@ -236,18 +235,6 @@ export const MdxComponents = {
     td: TableCell,
     Figure,
     CldImage,
-    img: ({ src, alt, ...rest }: ImageProps) => {
-      return (
-        <CldImage
-          src={src ? src.toString() : "/assets/images/placeholder-user.jpg"}
-          rawTransformations={["f_auto"]}
-          format="webp"
-          alt={alt}
-          width={500}
-          height={500}
-          {...rest}
-        />
-      );
-    },
+    
   },
 };

@@ -79,7 +79,6 @@ export const getGPTResponse = async (
             })
             const raw = response.output_parsed
             if (!raw) throw new Error('OpenAI returned empty response')
-                console.log(raw, "raw response")
            
                     return {
                 response: raw,

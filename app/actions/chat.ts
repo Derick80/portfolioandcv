@@ -99,11 +99,8 @@ export const saveAIResponse = async ({aiResponse,
     userId: string,
 })=>{
     // Implement the logic to save the AI response to the database
-    console.log(aiResponse, "ai response")
     const parsed = JSON.parse(aiResponse)
-    console.log(parsed, "parsed")
     const { input_word, additional_vocab } = parsed
-    // console.log(parsed, "parsed")
     const message = await prisma.message.create({
         data: {
             chatId,
@@ -119,7 +116,6 @@ export const saveAIResponse = async ({aiResponse,
     const saved = await saveKanjiResponse({
         kanji: parsed,
     })
-    console.log(saved, "saved kanji response")
     if (!saved) {
         console.error("Kanji response not saved");
         return;
@@ -221,7 +217,6 @@ Kanji Input: ${message}`
             chatId: chatId,
             userId: userId,
         })
-        console.log(generatedresponse, "generated response")
         return {
             response: cleanedRaw,
             success: true

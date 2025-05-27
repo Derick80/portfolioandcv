@@ -35,7 +35,6 @@ export default async function Page(props: {
       </div>
     );
   }
-  console.log(chat, "chat")
   return (
     <div className="container  mx-auto flex flex-col items-center ">
       <Card className="w-full  mx-auto mt-4">
