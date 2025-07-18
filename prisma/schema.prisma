@@ -258,3 +258,14 @@ model Kanji {
 }
 
 
+
+
+model Resume {
+  id           String        @id @default(cuid())
+  resumeName   String       @unique
+  name         String       
+  phone        String
+  email        String
+  address      String
+  summary     String
+}

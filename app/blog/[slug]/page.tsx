@@ -1,6 +1,4 @@
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
-import { blogPostSchema } from "@/lib/types";
-import { Suspense } from "react";
 import PostOverlay from "./post-overlay";
 import { z } from "zod";
 
@@ -37,13 +35,11 @@ export default async function Page(props: {
   return (
     <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
       <PostOverlay slug={post.slug} />
-      <Suspense fallback={<>Loading...</>}>
         <h1 className="text-3xl font-bold">{post.title}</h1>
         <p>
           {post.slug}
         </p>
         {post.rawMdx}
-      </Suspense>
     </article>
   );
 }
