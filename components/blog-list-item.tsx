@@ -8,7 +8,6 @@ import {
 } from "./ui/card";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
-import { Like } from "@prisma/client";
 
 const BlogListItem = ({
   post,
@@ -23,7 +22,13 @@ const BlogListItem = ({
     imageUrl?: string | null;
     wordCount: number;
     categories: string | string[];
-    likes: Like[];
+    likes: {
+      id: string;
+      userId: string;
+      postId: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
   };
 }) => {
   function SplitAndSortCategories(input: string | string[]) {
