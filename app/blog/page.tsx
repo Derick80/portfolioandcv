@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import BlogListItem from "@/components/blog-list-item";
 import { getPosts } from "../actions/blog";
@@ -42,7 +43,7 @@ export default async function Blog() {
         clicking on the Read More button.
       </p>
 
-      {posts && posts.map((post) => <BlogListItem key={post.slug} post={post} />)}
+      {posts && posts.map((post:any) => <BlogListItem key={post.slug} post={post} />)}
     </div>
   );
 }
