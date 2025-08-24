@@ -32,10 +32,7 @@ export default async function Blog() {
     return null;
   }
 
-  const frontmatter = posts.sort(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  
   return (
     <div className="flex flex-col gap-4 max-w-3xl mx-auto items-center py-2 md:gap-6">
       <p className="text-lg text-muted-foreground">
@@ -45,7 +42,7 @@ export default async function Blog() {
         clicking on the Read More button.
       </p>
 
-      {frontmatter?.map((post) => <BlogListItem key={post.slug} post={post} />)}
+      {posts?.map((post) => <BlogListItem key={post.slug} post={post} />)}
     </div>
   );
 }
