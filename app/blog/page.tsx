@@ -42,7 +42,7 @@ export default async function Blog() {
         clicking on the Read More button.
       </p>
 
-      {posts?.map((post) => <BlogListItem key={post.slug} post={post} />)}
+      {posts && posts.map((post) => <BlogListItem key={post.slug} post={post} />)}
     </div>
   );
 }
