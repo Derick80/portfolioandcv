@@ -147,8 +147,6 @@ export interface CVData {
 
 export const aiStatment = `This application's development process integrates artificial intelligence for the provision of code completion and ideational stimuli. It is imperative to delineate that the resultant creative and intellectual property, encompassing all textual content and written materials presented within this web application, originates from my authorship. Exceptions to this authorship are explicitly noted through meticulous citation of external sources, adhering to established academic and professional standards for intellectual property attribution. This methodology ensures both the efficient utilization of AI tools and the preservation of intellectual integrity.`;
 
-
-
 /* kanji chat section */
 
 type InputWord = {
@@ -163,12 +161,9 @@ type InputWord = {
   queryKanjiCharacter?: string;
   parentId?: string;
   additional_vocab?: InputWord[];
-  
-}
-
+};
 
 export type KanjiChatResponse = {
   input_word: InputWord;
   additional_vocab: InputWord[];
 };
-

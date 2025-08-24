@@ -17,9 +17,9 @@ const ChatForm = ({ userId, chatId }: { chatId: string; userId: string }) => {
           placeholder="Type your message here..."
           className="flex-1"
         />
-        <Button type="submit"
-        disabled={isPending}
-        >Send</Button>
+        <Button type="submit" disabled={isPending}>
+          Send
+        </Button>
       </form>
     </div>
   );

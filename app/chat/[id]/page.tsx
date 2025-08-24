@@ -42,7 +42,6 @@ export default async function Page(props: {
           <CardDescription>Chat Title: {chat.title}</CardDescription>
         </CardHeader>
         <CardContent>
-
           <MessageDisplay chatId={id} />
         </CardContent>
         <CardFooter className="w-full">

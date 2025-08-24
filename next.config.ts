@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "cdn.swu-db.com",
+        port: "",
+      },
+      {
+        protocol: "https",
         hostname: "res.cloudinary.com",
         port: "",
       },

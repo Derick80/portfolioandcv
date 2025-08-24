@@ -96,7 +96,6 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
 
         <Separator className="my-6 print:my-4 bg-black" />
 
-
         {/* Skills Section */}
         <section className="mb-8 print:mb-6">
           <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
@@ -104,24 +103,30 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:gap-3">
-            {Object.entries(skillsByCategory).sort(([categoryA],[categoryB])=>categoryA.localeCompare(categoryB) ).map(([category, skills]) => (
-              <div key={category}>
-                <h3 className="text-lg text-black font-bold mb-2 print:text-base">
-                  {category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                {skills.sort((a, b) => a.title.localeCompare(b.title)).map((skill) => (
-                      <Badge
-                        key={skill.title}
-                        variant="default"
-                        className="text-sm print:text-xs"
-                      >
-                        {skill.title}
-                      </Badge>
-                    ))}
+            {Object.entries(skillsByCategory)
+              .sort(([categoryA], [categoryB]) =>
+                categoryA.localeCompare(categoryB),
+              )
+              .map(([category, skills]) => (
+                <div key={category}>
+                  <h3 className="text-lg text-black font-bold mb-2 print:text-base">
+                    {category}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {skills
+                      .sort((a, b) => a.title.localeCompare(b.title))
+                      .map((skill) => (
+                        <Badge
+                          key={skill.title}
+                          variant="default"
+                          className="text-sm print:text-xs"
+                        >
+                          {skill.title}
+                        </Badge>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
 
@@ -205,28 +210,21 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
 
         <Separator className="my-6 print:my-4 bg-black" />
 
-  {/* Conferences Section */}
-  <section className="mb-8 print:mb-6 text-black space-y-4">
+        {/* Conferences Section */}
+        <section className="mb-8 print:mb-6 text-black space-y-4">
           <h2 className="text-xl font-bold mb-4 text-black print:text-lg print:mb-3">
             Conferences
           </h2>
-          {
-            cvData?.conferences?.map((conf) => (
-              <div key={conf.title} className="text-sm">
-                        <p className="font-medium">{conf.title}</p>
-                        <p className="text-gray-700">
-                          {conf.conference}
-                        </p>
-                        <p className="text-gray-700">
-                          {conf.authors.join(", ")}
-                        </p>
+          {cvData?.conferences?.map((conf) => (
+            <div key={conf.title} className="text-sm">
+              <p className="font-medium">{conf.title}</p>
+              <p className="text-gray-700">{conf.conference}</p>
+              <p className="text-gray-700">{conf.authors.join(", ")}</p>
+            </div>
+          ))}
+        </section>
 
-                      </div>
-            ))
-          }
-          </section>
-
-          <Separator className="my-6 print:my-4 bg-black" />
+        <Separator className="my-6 print:my-4 bg-black" />
 
         {/* Publications Section */}
         <section className="mb-8 print:mb-6 text-black">
@@ -256,11 +254,7 @@ export default function CVDisplay({ cvData }: CVDisplayProps) {
                         <p className="">
                           {pub.journal} {pub.journalInfo}
                         </p>
-                        {pub.doi && (
-                          <p className="">
-                            DOI: {pub.doi}
-                          </p>
-                        )}
+                        {pub.doi && <p className="">DOI: {pub.doi}</p>}
                       </div>
                     ))}
                 </div>

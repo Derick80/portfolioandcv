@@ -198,7 +198,6 @@ export const skills = [
   {
     title: "COSMIC",
     category: "Tools & Databases",
-
   },
   {
     title: "OncoKB",
@@ -209,8 +208,8 @@ export const skills = [
     category: "Tools & Databases",
   },
   {
-title:"BigQuery",
-category:"Tools & Databases"
+    title: "BigQuery",
+    category: "Tools & Databases",
   },
   {
     title: "Team Management",
@@ -462,9 +461,10 @@ export const publication = [
 
 export const conferences = [
   {
-    title:"Comprehensive Whole Genome Sequencing (WGS) Assay Provides Diagnostic Insight into Clinically Relevant Genomic Alterations Across Myeloid Malignancies",
+    title:
+      "Comprehensive Whole Genome Sequencing (WGS) Assay Provides Diagnostic Insight into Clinically Relevant Genomic Alterations Across Myeloid Malignancies",
     conference: "AACR: American Association FOR Cancer Research 2025",
-    authors:[
+    authors: [
       "Robert Huether PhD",
       "Derick Hoskinson",
       "Pavana Anur",
@@ -481,16 +481,34 @@ export const conferences = [
       "Halla Nimeiri, MD",
       "Lewis J. Kraft, PhD",
       "Francisco M. De La Vega",
-      "Guillermo Garcia-Manero, MD"
-    ]
+      "Guillermo Garcia-Manero, MD",
+    ],
   },
   {
-    title:"Detection of KMT2A Partial Tandem Duplication (PTD) in AML by Whole Genome Sequencing (WGS): Addressing Limitations of Traditional Techniques in the Era of Revumenib Approval",
+    title:
+      "Detection of KMT2A Partial Tandem Duplication (PTD) in AML by Whole Genome Sequencing (WGS): Addressing Limitations of Traditional Techniques in the Era of Revumenib Approval",
     conference: "ASCO: American Society of Clinical Oncology 2025",
-    authors:[
-      "Robert Huether", "Derick Hoskinson", "Pavana Anur", "Raul Torres", "Karl R. Beutner", "Kristiyana Kaneva", "Yan Yang", "Kelly A. Potts", "Andrew Frazier", "Iris Braunstein", "Brett Mahon", "Michael A. Thompson", "Kate Sasser", "Halla Nimeiri", "Lewis J. Kraft", "Francisco M. De La Vega",  "Alejandro Marinos Velarde"]
-  }
-]
+    authors: [
+      "Robert Huether",
+      "Derick Hoskinson",
+      "Pavana Anur",
+      "Raul Torres",
+      "Karl R. Beutner",
+      "Kristiyana Kaneva",
+      "Yan Yang",
+      "Kelly A. Potts",
+      "Andrew Frazier",
+      "Iris Braunstein",
+      "Brett Mahon",
+      "Michael A. Thompson",
+      "Kate Sasser",
+      "Halla Nimeiri",
+      "Lewis J. Kraft",
+      "Francisco M. De La Vega",
+      "Alejandro Marinos Velarde",
+    ],
+  },
+];
 export const cvData = {
   name: "first_cv",
   phone: "312-871-8067",
