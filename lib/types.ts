@@ -1,5 +1,5 @@
 /* Mdx Blog types */
-import { User, MdxPost } from "../prisma/prisma/generated/client";
+import { User, MdxPost } from "@prisma/client";
 import { z } from "zod";
 
 export const BASE_URL = "https://derickhoskinson.com";
