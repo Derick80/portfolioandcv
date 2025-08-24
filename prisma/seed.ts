@@ -1,5 +1,5 @@
 import { cvData } from "@/lib/cv_data";
-import {prisma} from "@/lib/prisma";
+import prisma from "@/prisma"
 import { aiStatment } from "@/lib/types";
 
 async function seedCV() {
