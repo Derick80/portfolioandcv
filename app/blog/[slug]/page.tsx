@@ -12,8 +12,8 @@ export async function generateStaticParams() {
   }));
 }
 
-const postIdSchema = z.object({
-  slug: z.string(),
+const paramsSchema = z.object({
+  slug: z.string().min(1), // Ensure slug is a non-empty string
 });
 
 export default async function Page(props: {
@@ -21,7 +21,12 @@ export default async function Page(props: {
     slug: string;
   }>;
 }) {
-  const { slug } = await props.params;
+  const validatedParams = paramsSchema.safeParse(await props.params)
+  if (!validatedParams.success) {
+    throw new Error("Invalid parameters");
+  }
+
+  const { slug } = validatedParams.data;
   if (!slug) {
     throw new Error("Slug is required");
   }
