@@ -33,7 +33,8 @@ export default async function Blog() {
   }
 
   const frontmatter = posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
   return (
     <div className="flex flex-col gap-4 max-w-3xl mx-auto items-center py-2 md:gap-6">
