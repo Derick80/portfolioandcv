@@ -33,7 +33,7 @@ export default async function Blog() {
     return null;
   }
 
-  
+  console.log(posts,"Posts:");
   return (
     <div className="flex flex-col gap-4 max-w-3xl mx-auto items-center py-2 md:gap-6">
       <p className="text-lg text-muted-foreground">
@@ -43,7 +43,7 @@ export default async function Blog() {
         clicking on the Read More button.
       </p>
 
-      {posts && posts.map((post:any) => <BlogListItem key={post.slug} post={post} />)}
+      {/* {posts && posts.map((post:any) => <BlogListItem key={post.slug} post={post} />)} */}
     </div>
   );
 }
