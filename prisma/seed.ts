@@ -1,6 +1,8 @@
 import { cvData } from "@/lib/cv_data";
-import prisma from "@/prisma"
+import { PrismaClient } from "@/prisma/prisma/generated/client";
 import { aiStatment } from "@/lib/types";
+
+const prisma = new PrismaClient();
 
 async function seedCV() {
   const cv = await prisma.cv.create({
