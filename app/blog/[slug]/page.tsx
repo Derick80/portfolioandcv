@@ -12,32 +12,24 @@ export async function generateStaticParams() {
   }));
 }
 
-const paramsSchema = z.object({
-  slug: z.string().min(1), // Ensure slug is a non-empty string
-});
+
 
 export default async function Page(props: {
   params: Promise<{
     slug: string;
   }>;
 }) {
-  const validatedParams = paramsSchema.safeParse(await props.params)
-  if (!validatedParams.success) {
-    throw new Error("Invalid parameters");
-  }
-
-  const { slug } = validatedParams.data;
+  const slug =await  props.params
   if (!slug) {
     throw new Error("Slug is required");
   }
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlug(slug.slug);
   if (!post) {
     throw new Error("Post not found");
   }
 
   return (
     <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
-      <PostOverlay slug={post.slug} />
       <h1 className="text-3xl font-bold">{post.title}</h1>
       <p>{post.slug}</p>
       {post.rawMdx}
