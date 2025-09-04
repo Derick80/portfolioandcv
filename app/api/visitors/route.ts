@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
-import prisma from "@/prisma";
+import {prisma} from "@/prisma";
 
 export async function GET() {
   const cookieStore = await cookies();
