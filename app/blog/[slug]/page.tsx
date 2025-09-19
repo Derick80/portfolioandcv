@@ -1,6 +1,7 @@
+export const runtime = "nodejs";
+
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 import PostOverlay from "./post-overlay";
-import { z } from "zod";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -24,16 +25,16 @@ export default async function Page(props: {
     throw new Error("Slug is required");
   }
   console.log(slug.slug,"Slug:");
-  // const post = await getPostBySlug(slug.slug);
-  // if (!post) {
-  //   throw new Error("Post not found");
-  // }
+  const post = await getPostBySlug(slug.slug);
+  if (!post) {
+    throw new Error("Post not found");
+  }
 
   return (
-    <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
-      {/* <h1 className="text-3xl font-bold">{post.title}</h1>
+    <article className="relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
+    <h1 className="text-3xl font-bold">{post.title}</h1> 
       <p>{post.slug}</p>
-      {post.rawMdx} */}
+      {post.rawMdx}
       <h1 className="text-3xl font-bold">Post Title</h1>
       <p>Post Slug: {slug.slug}</p>
       <p>Post content will be rendered here.</p>

@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import BlogListItem from "@/components/blog-list-item";

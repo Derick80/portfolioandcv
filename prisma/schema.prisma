@@ -157,6 +157,7 @@ model Duty {
   experienceId String?
   title        String
   order        Int // Used for sorting
+  createdAt    DateTime    @default(now())
   Experience   Experience? @relation(fields: [experienceId], references: [id])
   Education    Education?  @relation(fields: [educationId], references: [id])
   educationId  String?
@@ -298,4 +299,38 @@ model Investigator {
   game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+
+
+// new resume models
+
+model ExperienceSection{
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean  @default(false)
+  summary     String?  // optional top blurb for the role
+  order       Int      @default(0) // lets you sort multiple positions
+  bullets     Bullet[] // 1:N
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model Bullet {
+  id            String   @id @default(cuid())
+  experienceId  String
+  content       String
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  experience    ExperienceSection @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  @@index([experienceId, order])
 }
