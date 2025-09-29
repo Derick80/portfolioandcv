@@ -1,4 +1,3 @@
-import CldImage from "@/components/client-cloudinary";
 import Image, { ImageProps } from "next/image";
 import {
   Children,

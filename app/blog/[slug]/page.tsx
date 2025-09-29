@@ -1,15 +1,15 @@
 
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 
-export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  if (!posts) {
-    throw new Error("Post not found");
-  }
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
-}
+// export async function generateStaticParams() {
+//   const posts = await getAllPosts();
+//   if (!posts) {
+//     throw new Error("Post not found");
+//   }
+//   return posts.map((post) => ({
+//     params: { slug: post.slug },
+//   }));
+// }
 
 
 
@@ -18,11 +18,9 @@ export default async function Page(props: {
     slug: string;
   }>;
 }) {
-  const slug =await  props.params
-  if (!slug) {
-    throw new Error("Slug is required");
-  }
-  const post = await getPostBySlug(slug.slug);
+  const params =await  props.params
+  
+  const post = await getPostBySlug(params.slug);
   if (!post) {
     throw new Error("Post not found");
   }
@@ -32,7 +30,7 @@ console.log(post,"post");
     <h1 className="text-3xl font-bold">{post.title}</h1> 
       <p>{post.slug}</p>
       <h1 className="text-3xl font-bold">Post Title</h1>
-      <p>Post Slug: {slug.slug}</p>
+      <p>Post Slug: {params.slug}</p>
       <p>Post content will be rendered here.</p>
       {post.rawMdx}
     </article>
