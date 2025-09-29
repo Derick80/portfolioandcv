@@ -11,6 +11,8 @@ import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 //   }));
 // }
 
+// IT appears that static params are preventing this page from loading properly. I'm not sure why. 
+
 
 
 export default async function Page(props: {
@@ -27,7 +29,10 @@ export default async function Page(props: {
 console.log(post,"post");
   return (
     <article className="relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
-  
+      <h1 className="text-3xl font-bold">{post.title}</h1>
+      <div className="prose prose-lg dark:prose-invert">
+          {post.rawMdx}
+      </div>
     </article>
   );
 }
