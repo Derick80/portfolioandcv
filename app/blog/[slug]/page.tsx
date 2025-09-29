@@ -1,7 +1,5 @@
-export const runtime = "nodejs";
 
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
-import PostOverlay from "./post-overlay";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
