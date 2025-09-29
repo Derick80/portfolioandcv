@@ -1,15 +1,15 @@
 
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
 
-export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  if (!posts) {
-    throw new Error("Post not found");
-  }
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
-}
+// export async function generateStaticParams() {
+//   const posts = await getAllPosts();
+//   if (!posts) {
+//     throw new Error("Post not found");
+//   }
+//   return posts.map((post) => ({
+//     params: { slug: post.slug },
+//   }));
+// }
 
 
 
