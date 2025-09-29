@@ -1,11 +1,149 @@
 // app/actions/experience.ts
 "use server";
-
 import { revalidatePath } from "next/cache";
 import { parseISO } from "date-fns";
-import { experienceUpsertSchema, bulletCreateSchema, bulletUpdateSchema, bulletReorderSchema } from "@/lib/resumeschema";
+import { experienceUpsertSchema, bulletCreateSchema, bulletUpdateSchema, bulletReorderSchema, resumeProfileUpsertSchema } from "@/lib/resumeschema";
 import { prisma } from "@/prisma";
+import { z } from "zod";
+/** -------- Profile -------- */
+export async function upsertResumeProfile(input: unknown) {
+  const data = resumeProfileUpsertSchema.parse(input);
+  const row = data.id
+    ? await prisma.resumeProfile.update({ where: { id: data.id }, data })
+    : await prisma.resumeProfile.create({ data });
+  revalidatePath("/resume");
+  revalidatePath("/resume/edit");
+  return row;
+}
 
+/** -------- Links -------- */
+const linkUpsertSchema = z.object({
+  id: z.string().cuid().optional(),
+  profileId: z.string().cuid(),
+  label: z.string().min(2).max(60),
+  url: z.string().url(),
+});
+const idSchema = z.object({ id: z.string().cuid() });
+const reorderSchema = z.object({
+  profileId: z.string().cuid(),
+  orderedIds: z.array(z.string().cuid()).min(1),
+});
+
+export async function upsertLink(input: unknown) {
+  const data = linkUpsertSchema.parse(input);
+  let row;
+  if (data.id) {
+    row = await prisma.link.update({ where: { id: data.id }, data: { label: data.label, url: data.url } });
+  } else {
+    const max = await prisma.link.aggregate({ where: { profileId: data.profileId }, _max: { order: true } });
+    row = await prisma.link.create({
+      data: { profileId: data.profileId, label: data.label, url: data.url, order: (max._max.order ?? -1) + 1 },
+    });
+  }
+  revalidatePath("/resume/edit");
+  revalidatePath("/resume");
+  return row;
+}
+
+export async function deleteLink(input: unknown) {
+  const { id } = idSchema.parse(input);
+  await prisma.link.delete({ where: { id } });
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
+
+export async function reorderLinks(input: unknown) {
+  const { profileId, orderedIds } = reorderSchema.parse(input);
+  await prisma.$transaction(orderedIds.map((id, i) => prisma.link.update({ where: { id }, data: { order: i } })));
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
+
+/** -------- Skill Groups -------- */
+const skillUpsertSchema = z.object({
+  id: z.string().cuid().optional(),
+  profileId: z.string().cuid(),
+  title: z.string().min(2).max(120),
+  items: z.string().min(2),
+});
+
+export async function upsertSkillGroup(input: unknown) {
+  const data = skillUpsertSchema.parse(input);
+  let row;
+  if (data.id) {
+    row = await prisma.skillGroup.update({
+      where: { id: data.id }, data: { title: data.title, items: data.items },
+    });
+  } else {
+    const max = await prisma.skillGroup.aggregate({ where: { profileId: data.profileId }, _max: { order: true } });
+    row = await prisma.skillGroup.create({
+      data: { profileId: data.profileId, title: data.title, items: data.items, order: (max._max.order ?? -1) + 1 },
+    });
+  }
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+  return row;
+}
+
+export async function deleteSkillGroup(input: unknown) {
+  const { id } = idSchema.parse(input);
+  await prisma.skillGroup.delete({ where: { id } });
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
+
+export async function reorderSkillGroups(input: unknown) {
+  const { profileId, orderedIds } = reorderSchema.parse(input);
+  await prisma.$transaction(orderedIds.map((id, i) => prisma.skillGroup.update({ where: { id }, data: { order: i } })));
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
+
+/** -------- Education -------- */
+const eduUpsertSchema = z.object({
+  id: z.string().cuid().optional(),
+  profileId: z.string().cuid(),
+  school: z.string().min(2),
+  degree: z.string().min(2),
+  startDate: z.string().optional().or(z.literal("")),
+  endDate: z.string().optional().or(z.literal("")),
+  details: z.string().optional().or(z.literal("")),
+});
+
+function dateOrNull(s?: string) {
+  if (!s) return null;
+  try { return new Date(s); } catch { return null; }
+}
+
+export async function upsertEducation(input: unknown) {
+  const data = eduUpsertSchema.parse(input);
+  const payload = {
+    school: data.school,
+    degree: data.degree,
+    startDate: dateOrNull(data.startDate || undefined),
+    endDate: dateOrNull(data.endDate || undefined),
+    details: data.details || null,
+  };
+
+  let row;
+  if (data.id) {
+    row = await prisma.education.update({ where: { id: data.id }, data: payload });
+  } else {
+    const max = await prisma.education.aggregate({ where: { profileId: data.profileId }, _max: { order: true } });
+    row = await prisma.education.create({
+      data: { ...payload, profileId: data.profileId, order: (max._max.order ?? -1) + 1 },
+    });
+  }
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+  return row;
+}
+
+export async function deleteEducation(input: unknown) {
+  const { id } = idSchema.parse(input);
+  await prisma.education.delete({ where: { id } });
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
+
+export async function reorderEducation(input: unknown) {
+  const { profileId, orderedIds } = reorderSchema.parse(input);
+  await prisma.$transaction(orderedIds.map((id, i) => prisma.education.update({ where: { id }, data: { order: i } })));
+  revalidatePath("/resume/edit"); revalidatePath("/resume");
+}
 
 
 export const getExperience =async()=>{

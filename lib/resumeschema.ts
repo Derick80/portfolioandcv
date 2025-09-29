@@ -29,3 +29,41 @@ export const bulletReorderSchema = z.object({
 });
 
 export type ExperienceUpsertInput = z.infer<typeof experienceUpsertSchema>;
+
+export const linkSchema = z.object({
+  id: z.string().cuid().optional(),
+  label: z.string().min(2).max(60),
+  url: z.string().url(),
+  order: z.number().int().nonnegative().default(0),
+});
+
+export const skillGroupSchema = z.object({
+  id: z.string().cuid().optional(),
+  title: z.string().min(2).max(120),
+  items: z.string().min(2), // comma-separated (e.g., "ACMG, ClinVar, LOF/GOF…")
+  order: z.number().int().nonnegative().default(0),
+});
+
+export const educationSchema = z.object({
+  id: z.string().cuid().optional(),
+  school: z.string().min(2),
+  degree: z.string().min(2),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  details: z.string().optional().or(z.literal("")),
+  order: z.number().int().nonnegative().default(0),
+});
+
+export const resumeProfileUpsertSchema = z.object({
+  id: z.string().cuid().optional(),
+  fullName: z.string().min(2),
+  headline: z.string().min(2),
+  location: z.string().optional().or(z.literal("")),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+  website: z.string().url().optional(),
+  summary: z.string().optional(),
+  // For initial bootstrap you could post arrays, but typical editing will manage these separately.
+});
+
+export type ResumeProfileUpsertInput = z.infer<typeof resumeProfileUpsertSchema>;
