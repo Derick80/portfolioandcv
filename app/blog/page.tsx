@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import BlogListItem from "@/components/blog-list-item";
 import { getPosts } from "../actions/blog";
@@ -28,14 +30,10 @@ export const metadata: Metadata = {
 
 export default async function Blog() {
   const posts = await getPosts();
-  console.log(posts, "posts");
   if (!posts.length) {
     return null;
   }
 
-  const frontmatter = posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
   return (
     <div className="flex flex-col gap-4 max-w-3xl mx-auto items-center py-2 md:gap-6">
       <p className="text-lg text-muted-foreground">
@@ -45,7 +43,7 @@ export default async function Blog() {
         clicking on the Read More button.
       </p>
 
-      {frontmatter?.map((post) => <BlogListItem key={post.slug} post={post} />)}
+      {posts && posts.map((post:any) => <BlogListItem key={post.slug} post={post} />)}
     </div>
   );
 }

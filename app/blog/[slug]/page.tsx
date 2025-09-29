@@ -1,6 +1,6 @@
+export const runtime = "nodejs";
+
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
-import { blogPostSchema } from "@/lib/types";
-import { Suspense } from "react";
 import PostOverlay from "./post-overlay";
 
 export async function generateStaticParams() {
@@ -12,33 +12,32 @@ export async function generateStaticParams() {
     params: { slug: post.slug },
   }));
 }
+
+
+
 export default async function Page(props: {
   params: Promise<{
     slug: string;
   }>;
 }) {
-  const params = await props.params;
-
-  const { slug } = blogPostSchema.parse(params);
+  const slug =await  props.params
   if (!slug) {
-    throw new Error("No slug provided");
+    throw new Error("Slug is required");
   }
-  const post = await getPostBySlug(slug);
+  console.log(slug.slug,"Slug:");
+  const post = await getPostBySlug(slug.slug);
   if (!post) {
     throw new Error("Post not found");
   }
-  const { rawMdx, ...rest } = post;
 
   return (
-    <article className=" relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
-      <PostOverlay slug={rest.slug} />
-      <Suspense fallback={<>Loading...</>}>
-        <h1 className="text-3xl font-bold">{rest.title}</h1>
-        <p>
-          {rest.slug}
-        </p>
-        {rawMdx}
-      </Suspense>
+    <article className="relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle md:px-0">
+    <h1 className="text-3xl font-bold">{post.title}</h1> 
+      <p>{post.slug}</p>
+      {post.rawMdx}
+      <h1 className="text-3xl font-bold">Post Title</h1>
+      <p>Post Slug: {slug.slug}</p>
+      <p>Post content will be rendered here.</p>
     </article>
   );
 }

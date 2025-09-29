@@ -1,5 +1,5 @@
 import CldImage from "@/components/client-cloudinary";
-import { ImageProps } from "next/image";
+import Image, { ImageProps } from "next/image";
 import {
   Children,
   createElement,
@@ -162,7 +162,6 @@ const CodeBlock = async ({
 
   if (isCodeBlock) {
     const lang = className.split(" ")[0]?.split("-")[1] ?? "";
-    console.log(lang);
     if (!lang) {
       return (
         <code
@@ -235,13 +234,11 @@ export const MdxComponents = {
     tr: TableRow,
     td: TableCell,
     Figure,
-    CldImage,
+    Image,
     img: ({ src, alt, ...rest }: ImageProps) => {
       return (
-        <CldImage
+        <Image
           src={src ? src.toString() : "/assets/images/placeholder-user.jpg"}
-          rawTransformations={["f_auto"]}
-          format="webp"
           alt={alt}
           width={500}
           height={500}

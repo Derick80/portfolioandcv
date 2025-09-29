@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import {prisma} from "@/prisma";
 
 export const getCV = async () => {
   const cv = await prisma.cv.findFirst({

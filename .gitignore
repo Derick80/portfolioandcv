@@ -9,9 +9,17 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+# Prisma
+/prisma/generated/
+/prisma/prisma/generated/
 
+# Node dependencies / compiled files
+*.node
 # testing
 /coverage
+
+/prisma/prisma/generated
+
 
 # next.js
 /.next/

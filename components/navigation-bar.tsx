@@ -22,9 +22,7 @@ export interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
   { label: "Resume", href: "/cv" },
-  { label: "Blog", href: "/blog" },
 ];
 
 const MAX_MOBILE_LINKS = 2;
@@ -48,7 +46,7 @@ const NavigationBar = async () => {
           </Link>
         </div>
         {/* Section 2: Navigation Links */}
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-4 justify-center flex-1">
           {navLinks.map((link) => (
             <ViewTransition key={link.href}>
               <Link
@@ -91,10 +89,11 @@ const NavigationBar = async () => {
         </div>
         {/* Section 3: User Profile */}
         <div className=" md:flex items-center space-x-4">
-          <UserMenu user={session?.user} />
+         
         </div>
         {/* Section 4: Theme Toggle */}
         <div className="hidden md:flex items-center">
+           <UserMenu user={session?.user} />
           <ModeToggle />
         </div>
       </div>

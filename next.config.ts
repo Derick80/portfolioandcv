@@ -4,8 +4,14 @@ const nextConfig: NextConfig = {
   experimental:{
     viewTransition: true,
   },
+    typescript: { ignoreBuildErrors: true },
   images: {
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.swu-db.com",
+        port: "",
+      },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",

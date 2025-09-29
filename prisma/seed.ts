@@ -1,8 +1,61 @@
 import { cvData } from "@/lib/cv_data";
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "./prisma/generated"
 import { aiStatment } from "@/lib/types";
 
+const prisma = new PrismaClient();
+
 async function seedCV() {
+  const profile = await prisma.resumeProfile.upsert({
+    where: { id: "seed-profile" },
+    update: {},
+    create: {
+      id: "seed-profile",
+      fullName: "Derick C. Hoskinson, PhD",
+      headline: "Senior Clinical Scientist",
+      location: "Chicago, IL",
+      email: "derickhoskinson@gmail.com",
+      website: "https://derickhoskinson.com",
+      summary:
+        "Clinical scientist specializing in DNA variant classification using ACMG guidelines. Experienced across somatic and hereditary oncology, panel design, and NGS assay development.",
+      links: {
+        create: [
+          { label: "GitHub", url: "https://github.com/derick80", order: 0 },
+          { label: "LinkedIn", url: "https://www.linkedin.com/in/dhoskinson", order: 1 },
+        ],
+      },
+      skills: {
+        create: [
+          { title: "Genomics & Curation", items: "ACMG/AMP, ClinVar, GOF/LOF, CNV/SV, WGS/WES", order: 0 },
+          { title: "Software", items: "TypeScript, React/Next.js, Tailwind, Prisma, R", order: 1 },
+        ],
+      },
+      education: {
+        create: [
+          { school: "Tufts University Gradudate School of Biomedical Sciences", degree: "Ph.D., Genetics", order: 0 },
+        ],
+      },
+    },
+  });
+
+  // ensure at least one experience exists
+  const exp = await prisma.experienceSection.create({
+    data: {
+      title: "Senior Clinical Scientist",
+      company: "Tempus AI",
+      location: "Chicago, IL 60640",
+      startDate: new Date("2020-06-01"),
+      isCurrent: true,
+      order: 0,
+      bullets: {
+        create: [
+          { content: "Created tailored BED files to optimize genomic variant analysis.", order: 0 },
+          { content: "Contributed to xT CDx FDA submission via gene evidence curation.", order: 1 },
+        ],
+      },
+    },
+  });
+
+  console.log("Seeded profile:", profile.id, "experience:", exp.id);
   const cv = await prisma.cv.create({
     data: {
       name: cvData.name,
@@ -29,13 +82,13 @@ async function seedCV() {
           authors: publication.authors,
         })),
       },
-      conferences:{
+      conferences: {
         create: cvData.conferences.map((conference) => ({
           title: conference.title,
           conference: conference.conference,
           authors: conference.authors,
         })),
-      }
+      },
     },
   });
 
@@ -130,7 +183,58 @@ async function seedCV() {
 
 async function main() {
   console.log("Deleting all records...");
+ console.log("Seeding database...");
+   const profile = await prisma.resumeProfile.upsert({
+    where: { id: "seed-profile" },
+    update: {},
+    create: {
+      id: "seed-profile",
+      fullName: "Derick C. Hoskinson, PhD",
+      headline: "Senior Clinical Scientist",
+      location: "Chicago, IL",
+      email: "derickhoskinson@gmail.com",
+      website: "https://derickhoskinson.com",
+      summary:
+        "Clinical scientist specializing in DNA variant classification using ACMG guidelines. Experienced across somatic and hereditary oncology, panel design, and NGS assay development.",
+      links: {
+        create: [
+          { label: "GitHub", url: "https://github.com/derick80", order: 0 },
+          { label: "LinkedIn", url: "https://www.linkedin.com/in/dhoskinson", order: 1 },
+        ],
+      },
+      skills: {
+        create: [
+          { title: "Genomics & Curation", items: "ACMG/AMP, ClinVar, GOF/LOF, CNV/SV, WGS/WES", order: 0 },
+          { title: "Software", items: "TypeScript, React/Next.js, Tailwind, Prisma, R", order: 1 },
+        ],
+      },
+      education: {
+        create: [
+          { school: "Tufts University Gradudate School of Biomedical Sciences", degree: "Ph.D., Genetics", order: 0 },
+        ],
+      },
+    },
+  });
 
+  // ensure at least one experience exists
+  const exp = await prisma.experienceSection.create({
+    data: {
+      title: "Senior Clinical Scientist",
+      company: "Tempus AI",
+      location: "Chicago, IL 60640",
+      startDate: new Date("2020-06-01"),
+      isCurrent: true,
+      order: 0,
+      bullets: {
+        create: [
+          { content: "Created tailored BED files to optimize genomic variant analysis.", order: 0 },
+          { content: "Contributed to xT CDx FDA submission via gene evidence curation.", order: 1 },
+        ],
+      },
+    },
+  });
+
+  console.log("Seeded profile:", profile.id, "experience:", exp.id);
   await prisma.$transaction([
     prisma.cv.deleteMany(),
     prisma.education.deleteMany(),

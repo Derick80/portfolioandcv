@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "./prisma/generated"
 }
 
 datasource db {
@@ -156,6 +157,7 @@ model Duty {
   experienceId String?
   title        String
   order        Int // Used for sorting
+  createdAt    DateTime    @default(now())
   Experience   Experience? @relation(fields: [experienceId], references: [id])
   Education    Education?  @relation(fields: [educationId], references: [id])
   educationId  String?
@@ -257,3 +259,127 @@ model Kanji {
 }
 
 
+
+
+model Resume {
+  id           String        @id @default(cuid())
+  resumeName   String       @unique
+  name         String       
+  phone        String
+  email        String
+  address      String
+  summary     String
+}
+
+
+model Game {
+  id          String   @id @default(cuid())
+  title       String
+  difficulty  String @default("Easy") 
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  investigators Investigator[]
+  campaignNotes  CampaignNotes[]
+}
+
+model CampaignNotes {
+  id        String   @id @default(cuid())
+  content   String
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Investigator {
+  id          String   @id @default(cuid())
+  name        String
+  code       String
+  gameId      String
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ResumeProfile {
+  id          String   @id @default(cuid())
+  fullName    String
+  headline    String            // e.g., "Senior Clinical Scientist"
+  location    String?           // e.g., "Chicago, IL"
+  email       String?
+  phone       String?
+  website     String?           // e.g., derickhoskinson.com
+  summary     String?           // brief professional summary/blurb
+  links       Link[]            // GitHub, LinkedIn, Scholar, etc.
+  skills      SkillGroup[]      // "Genomics", "Web Engineering", etc.
+  education   EducationalEntry[]       // degrees
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Link {
+  id        String   @id @default(cuid())
+  label     String   // "LinkedIn", "GitHub", "Google Scholar"
+  url       String
+  order     Int      @default(0)
+  profileId String
+  profile   ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, order])
+}
+
+model SkillGroup {
+  id        String   @id @default(cuid())
+  title     String   // "Genomics & Variant Curation"
+  items     String   // comma-separated, or JSON if preferred
+  order     Int      @default(0)
+  profileId String
+  profile   ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, order])
+}
+
+model EducationalEntry {
+  id          String   @id @default(cuid())
+  school      String
+  degree      String       // "Ph.D. in Molecular Genetics"
+  startDate   DateTime?
+  endDate     DateTime?
+  details     String?      // thesis, advisor, honors
+  order       Int       @default(0)
+  profileId   String
+  profile     ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, order])
+}
+
+model ExperienceSection{
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean  @default(false)
+  summary     String?  // optional top blurb for the role
+  order       Int      @default(0) // lets you sort multiple positions
+  bullets     Bullet[] // 1:N
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model Bullet {
+  id            String   @id @default(cuid())
+  experienceId  String
+  content       String
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  experience    ExperienceSection @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  @@index([experienceId, order])
+}
