@@ -1,5 +1,5 @@
 // lib/db.ts
-import { PrismaClient } from "./prisma/prisma/generated";
+import { PrismaClient } from './prisma/prisma/generated'
 
 /**
  * In dev, keep one client across HMR; in prod, create exactly one.
