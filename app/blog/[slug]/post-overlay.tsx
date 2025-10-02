@@ -120,13 +120,13 @@ const [commentOpen, setCommentOpen] = React.useState(false);
           <TooltipTrigger asChild>
              <Button
               size="sm"
+              variant='outline'
               onClick={handleToggleLike}
-              variant={hasLiked ? "default" : "outline"}
               disabled={isPending}
               aria-pressed={hasLiked}
               className="gap-2"
             >
-              <Heart className={cn("h-4 w-4", hasLiked && "fill-current")} />
+              <Heart className={cn("h-4 w-4", hasLiked && "fill-red-500")} />
               <Badge variant="secondary" className="ml-1">{initial.likes}</Badge>
             </Button>
           </TooltipTrigger>
@@ -137,7 +137,7 @@ const [commentOpen, setCommentOpen] = React.useState(false);
             <Button
               size="sm"
               onClick={handleToggleFavorite}
-              variant={hasFavorited ? "default" : "outline"}
+              variant='outline'
               disabled={isPending}
               aria-pressed={hasFavorited}
               className="gap-2"

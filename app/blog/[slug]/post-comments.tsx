@@ -33,7 +33,9 @@ export default async function PostComments({ postId, userId }: { postId: string,
     postId: r.post.id,
     postSlug: r.post.slug,
     likes: r.likes || [], // add the likes array to each comment, can be empty
-    currentUserId: userId || undefined, // pass current user ID for like gating
+    currentUserId: userId 
+    
+    // pass current user ID for like gating
   }));
 
   return <CommentsThread postId={postId} comments={flat} />;
