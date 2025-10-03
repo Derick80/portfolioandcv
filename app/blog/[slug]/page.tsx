@@ -1,6 +1,5 @@
 
 import { getAllPosts, getPostBySlug } from "@/app/actions/mdx-server-functions";
-import prisma from "@/prisma";
 import EngagementOverlay from "./post-overlay";
 import { auth } from "@/auth";
 import {  getPostDataById } from "@/app/actions/blog";
