@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma/prisma/generated/client";
 import { MdxCompiled } from "@/lib/types";
 import { getAllPosts } from "@/app/actions/mdx-server-functions";
 
