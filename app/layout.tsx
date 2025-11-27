@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} gap-20 max-w-7xl mx-auto not-[]:antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -57,7 +57,7 @@ export default function RootLayout({
         >
           <NavigationBar />
           <UniqueVisitors />
-          <main className="flex flex-col gap-[32px] max-w-6xl mx-auto row-start-2 items-center sm:items-start">
+          <main className="flex flex-col min-h-screen">
             {children}
           </main>
         </ThemeProvider>

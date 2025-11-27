@@ -7,7 +7,7 @@ export default async function ForumLandingPage() {
   const recentThreads = await getRecentThreads(5); // limit to 5 latest
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10 py-8">
+    <div className="max-w-5xl mx-auto space-y-10 py-8 px-4">
       {/* Welcome Section */}
       <div className="text-center space-y-2">
         <h1 className="text-4xl font-bold">Genetics Forum</h1>

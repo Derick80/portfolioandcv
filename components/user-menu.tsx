@@ -75,6 +75,7 @@ export function UserMenu({ user }: UserMenuProps) {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
+                  <SignIn />
                 <span>Settings</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -87,10 +88,10 @@ export function UserMenu({ user }: UserMenuProps) {
           <>
             <DropdownMenuLabel>
               <span>Account</span>
+                <SignIn />
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <SignIn />
+            
             </DropdownMenuItem>
           </>
         )}

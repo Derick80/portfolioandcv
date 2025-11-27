@@ -17,7 +17,7 @@ export async function generateMetadata(
     cvData?.name === "first_cv" ? "Derick Hoskinson, Ph.D." : cvData?.name;
 
   // Create skills list for keywords
-// disable no explicit any for skills mapping
+  // disable no explicit any for skills mapping
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const skills = cvData?.skills.map((skill) => skill.title).join(", ");
 

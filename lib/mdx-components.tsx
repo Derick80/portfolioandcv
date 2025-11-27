@@ -12,6 +12,7 @@ import type { JSX } from "react";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { jsx, jsxs } from "react/jsx-runtime";
 import { codeToHast } from "shiki";
+import { cn } from "./utils";
 
 function slugify(str: string) {
   return str
@@ -146,11 +147,10 @@ export function TableCell(props: HtmlHTMLAttributes<HTMLTableCellElement>) {
   return <td className="px-4 py-2" {...props} />;
 }
 
-const CodeBlock = async ({
+export const CodeBlock = async ({
   children,
   ...props
 }: React.HtmlHTMLAttributes<HTMLPreElement>) => {
-  // Extract className from the children code tag
   const codeElement = Children.toArray(children).find(
     (child) => isValidElement(child) && child.type === "code",
   ) as React.ReactElement<HTMLPreElement> | undefined;
@@ -159,51 +159,62 @@ const CodeBlock = async ({
   const isCodeBlock =
     typeof className === "string" && className.startsWith("language-");
 
-  if (isCodeBlock) {
-    const lang = className.split(" ")[0]?.split("-")[1] ?? "";
-    if (!lang) {
-      return (
-        <code
-          className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800"
-          {...props}
-        >
-          {children}
-        </code>
-      );
-    }
-
-    const out = await codeToHast(String(codeElement?.props.children), {
-      lang,
-      theme: "nord",
-    });
-    return toJsxRuntime(out, {
-      Fragment,
-      jsx,
-      jsxs,
-      components: {
-        // your custom `pre` element
-        pre: (props) => (
-          <pre
-            className="rounded-lg bg-green-500 p-4 dark:bg-gray-800"
-            data-custom-codeblock
-            {...props}
-          />
-        ),
-      },
-    }) as JSX.Element;
+  if (!isCodeBlock) {
+    return (
+      <code
+        className={cn(
+          "rounded-md bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground"
+        )}
+        {...props}
+      >
+        {children}
+      </code>
+    );
   }
 
-  // If not, return the component as is
+  const lang = className.split(" ")[0]?.split("-")[1] ?? "";
+
+  // Highlight the code with Shiki
+  const out = await codeToHast(String(codeElement?.props.children), {
+    lang,
+    theme: "nord",
+  });
+
+  // Construct highlighted JSX
+  const highlighted = toJsxRuntime(out, {
+    Fragment,
+    jsx,
+    jsxs,
+    components: {
+      pre: (p) => (
+        <pre
+          className={cn(
+            "p-4 overflow-x-auto text-sm font-mono leading-relaxed",
+            "bg-card rounded-b-xl"
+          )}
+          {...p}
+        />
+      ),
+    },
+  }) as JSX.Element;
+
   return (
-    <pre
-      className="rounded-lg italic bg-gray-100 p-4 dark:bg-gray-800"
-      {...props}
+    <div
+      className={cn(
+        "my-6 border border-border rounded-xl overflow-hidden",
+        "shadow-sm bg-background"
+      )}
     >
-      {children}
-    </pre>
+      {/* Header bar with language label */}
+      <div className="flex items-center justify-between px-4 py-2 bg-muted/50 border-b border-border text-xs uppercase tracking-wide font-medium text-muted-foreground">
+        <span>{lang || "code"}</span>
+      </div>
+
+      {/* Highlighted code */}
+      {highlighted}
+    </div>
   );
 };
-
 export const Paragraph = (props: { children?: React.ReactNode }) => {
   if (typeof props.children !== "string" && props.children === "img") {
     return <>{props.children}</>;
@@ -242,6 +253,8 @@ export const MdxComponents = {
           width={500}
           height={500}
           {...rest}
+            className="mx-auto my-6 rounded-xl shadow-lg"
+
         />
       );
     },

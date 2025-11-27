@@ -1,0 +1,67 @@
+---
+title: My Akrham Horror LCG Hobby
+author: Derick
+date: 2025-09-30
+published: true
+description: Some information on a game I recently started to play
+imageurl: https://res.cloudinary.com/dch-photo/image/upload/v1759455655/PXL_20250930_234926156_mdgox6.jpg
+categories: [Updates,Personal]
+---
+# Akrham Horror LCG Hobby
+## Introduction - Why another card game?
+
+So what have I been up to lately? 
+
+I have rediscovered my love for gaming. After trying Magic the Gathering and a draft of [Star Wars Unlimited](https://starwarsunlimited.com/) at my local game store I realized I was also looking for something a little different. Although I will continue to play MTG and SWU I am really a gamer that loves cooperative gaming and using cards in games. In particular my favorite board games are [Battlestar Galactica the Board Game](https://www.fantasyflightgames.com/en/products/battlestar-galactica/) and [Unfathomable](https://www.fantasyflightgames.com/en/unfathomable/) where both are cooperative but have a 'traitor' mechanic where at least one person is working against the goals of the rest of the team. 
+
+
+In comes Arkham Horror the Living Card game. AH:LCG is a cooperative game where you take on the role of an investigator looking into cosmic horrors. 
+![Arkham Horror All Night](https://res.cloudinary.com/dch-photo/image/upload/v1759455655/PXL_20250930_234926156_mdgox6.jpg)
+
+### Getting Started
+
+AH:LCG is a cooperative living card game. That just means it has a full set of play cards in each expansion and there is no rarity like there is in games like MTG or SWU. In theory this makes collecting every card easier although in practice it's a little more difficult due to the age of this game. It came out in 2016 and many of the exansions are out of print. That said, I managaed to collect all the investigator expansions and I only had to special order and pay more for one of them! I haven't collected all the campaigns. I justify this because why spend money on something I will not use at all until I have completed all of my current campaigns. 
+
+### Playing Two-Handed Solo
+
+I have been playing AH:LCG two handed solo -- where I play two investigators -- for a couple of months now. I created a handly little mobile compatible [Round Tracker](https://arkhamtracker.vercel.app/) based off a [pdf](https://boardgamegeek.com/filepage/223617/ahlcg-round-tracker-for-two-handed-solo)
+
+### Favorite Expansions (so far)
+
+I have played through all of the Core set and Dunwich Legacy campaigns.I am currently working my way through the Path to Carcosa but I have taken a break to replay some older scenarios with new characters and decks. 
+
+## Arkham Chatbot
+
+I created a chatbot to clarify rules and gameplay questions using chatGPT. I am pretty new to AH:LCG and I still have questions about the ruless. To answer the rules I refered to the rules reference or I would Google search for answers. I have been using AI a lot at work and so I decided to create a chatbot to answer rules questions.
+
+So why would I make a specialized chatbot? Why not just ask ChatGPT? That's a good question without a really great answer. My answer is that I wanted to use the tools available for ChatGPT. The two tools I used were the file search tool and the web search tool.
+
+I also recorded the question or prompt and saved a mostly full record of the LLM's response. Not that anyone is even interested but I thought it might be a fun way to test how I think about rules. For the most part the decisions the AI and I agreed. That's pretty cool but it could just be confirmation bias. 
+
+
+```tsx
+
+prompt = input("enter your question").strip()
+# prompt = "what are 3 powerful level 0 rogue weapon cards"
+response = client.responses.create(
+    model="gpt-5",
+    instructions="you are an expert assistant on Arkham Horror the living card game. Whenever possible use the context to answer questions correctlly and concisely. If the context doesn't contain the answer,use a web search. for file search cite the file name for web searches cite the website. If neither resource has information for the question respond with 'I don't know'.",
+    input=prompt,
+    reasoning={"effort": "high"},
+    tools=[{
+        "type": "file_search",
+        "vector_store_ids": [
+            vector_store.id
+        ]
+    },
+        {
+        "type": "web_search",
+        "filters": {
+            "allowed_domains": ["arkhamdb.com", "fantasyflightgames.com", "reddit.com"]
+        }
+
+    }
+    ]
+)
+print(response.output_text)
+```
