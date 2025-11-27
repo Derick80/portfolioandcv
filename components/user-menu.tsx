@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { LogOut, Settings, User, UserPlus } from "lucide-react";
+import { Settings, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";

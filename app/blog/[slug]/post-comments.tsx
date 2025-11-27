@@ -1,5 +1,5 @@
 // app/blog/[slug]/PostComments.tsx
-import prisma from "@/prisma";
+import {prisma} from "../../../prisma";
 import CommentsThread from "./comments-thread";
 import { FlatComment } from "./comments-thread";
 

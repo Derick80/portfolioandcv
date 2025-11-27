@@ -1,8 +1,6 @@
 import { cvData } from "@/lib/cv_data";
-import { PrismaClient } from "./prisma/generated"
+import { prisma } from "../prisma";
 import { aiStatment } from "@/lib/types";
-
-const prisma = new PrismaClient();
 
 async function seedCV() {
   const profile = await prisma.resumeProfile.upsert({
@@ -183,8 +181,8 @@ async function seedCV() {
 
 async function main() {
   console.log("Deleting all records...");
- console.log("Seeding database...");
-   const profile = await prisma.resumeProfile.upsert({
+  console.log("Seeding database...");
+  const profile = await prisma.resumeProfile.upsert({
     where: { id: "seed-profile" },
     update: {},
     create: {

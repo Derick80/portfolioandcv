@@ -2,7 +2,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import prisma from "@/prisma";
+import {prisma} from '../../prisma'
 import { revalidatePath } from "next/cache";
 
 export const getAllCategories = async () => {
