@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import {prisma}  from '../prisma'
 import { MdxCompiled } from "@/lib/types";
 import { getAllPosts } from "@/app/actions/mdx-server-functions";
 
@@ -6,7 +6,6 @@ import { getAllPosts } from "@/app/actions/mdx-server-functions";
 // This is because the prisma instance is not available in the scripts folder
 // it's ok to import the blog actions because they do not use the prisma instance
 
-const prisma = new PrismaClient();
 
 // Helper function to map post frontmatter to Prisma's upsert input
 const mapPostToPrismaData = ({ post }: { post: MdxCompiled }) => ({
