@@ -1,23 +1,20 @@
-// lib/db.ts
-import { PrismaClient } from "./prisma/prisma/generated";
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 
-/**
- * In dev, keep one client across HMR; in prod, create exactly one.
- * Do NOT call prisma.$disconnect() inside request handlers in serverless.
- */
-declare global {
-  // eslint-disable-next-line no-var
-  var __prisma__: PrismaClient | undefined;
+const connectionString = process.env.DATABASE_URL!
+
+const pool = new Pool({ connectionString })
+const adapter = new PrismaPg(pool)
+
+const prismaClientSingleton = () => {
+  return new PrismaClient({ adapter })
 }
 
-export const prisma =
-  globalThis.__prisma__ ??
-  new PrismaClient({
-    // log: ["query", "error", "warn"], // optionally enable to debug
-  });
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
 
-if (process.env.NODE_ENV !== "production") {
-  globalThis.__prisma__ = prisma;
-}
+export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
-export default prisma;
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { LogOut, Settings, User, UserPlus } from "lucide-react";
+import { Settings, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -75,6 +74,7 @@ export function UserMenu({ user }: UserMenuProps) {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
+                  <SignIn />
                 <span>Settings</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -87,10 +87,10 @@ export function UserMenu({ user }: UserMenuProps) {
           <>
             <DropdownMenuLabel>
               <span>Account</span>
+                <SignIn />
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <SignIn />
+            
             </DropdownMenuItem>
           </>
         )}

@@ -1,6 +1,6 @@
 // app/resume/page.tsx
 
-import { prisma } from "@/prisma";
+import { prisma } from "../../prisma";
 
 export default async function ResumePage() {
   const profile = await prisma.resumeProfile.findFirst({

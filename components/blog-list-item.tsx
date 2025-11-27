@@ -22,13 +22,7 @@ const BlogListItem = ({
     imageUrl?: string | null;
     wordCount: number;
     categories: string | string[];
-    likes: {
-      id: string;
-      userId: string;
-      postId: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }[];
+  
   };
 }) => {
   function SplitAndSortCategories(input: string | string[]) {

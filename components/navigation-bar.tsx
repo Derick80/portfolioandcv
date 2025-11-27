@@ -33,29 +33,28 @@ const NavigationBar = async () => {
   const dropdownLinks = navLinks.slice(MAX_MOBILE_LINKS);
 
   return (
-    <nav className="w-full max-w-6xl mx-auto bg-primary-foreground rounded-lg border-b border-accent">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between max-w-6xl">
         {/* Section 1: Logo */}
         <div className="flex-shrink-0">
           <Link
             href="/"
-            className="text-xl font-bold text-gray-900 dark:text-white"
+            className="flex items-center gap-2 text-xl font-bold text-foreground transition-colors hover:text-primary"
           >
-            {/* Replace with your Logo/Icon */}
             <BrandIcon />
+            <span className="hidden sm:inline-block">Dr. Hoskinson</span>
           </Link>
         </div>
         {/* Section 2: Navigation Links */}
-        <div className="hidden md:flex space-x-4 justify-center flex-1">
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
             <ViewTransition key={link.href}>
               <Link
-                key={link.label}
                 href={link.href}
-                className="text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400"
+                className="transition-colors hover:text-primary text-foreground/60"
               >
                 {link.label}
-              </Link>{" "}
+              </Link>
             </ViewTransition>
           ))}
         </div>
@@ -65,7 +64,7 @@ const NavigationBar = async () => {
             <Link
               key={link.href}
               href={link.href}
-              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition text-sm"
+              className="text-foreground/60 hover:text-foreground transition text-sm"
             >
               {link.label}
             </Link>
@@ -87,13 +86,9 @@ const NavigationBar = async () => {
             </DropdownMenu>
           )}
         </div>
-        {/* Section 3: User Profile */}
-        <div className=" md:flex items-center space-x-4">
-         
-        </div>
-        {/* Section 4: Theme Toggle */}
-        <div className="hidden md:flex items-center">
-           <UserMenu user={session?.user} />
+        {/* Section 3: User Profile & Theme */}
+        <div className="flex items-center gap-4">
+          <UserMenu user={session?.user} />
           <ModeToggle />
         </div>
       </div>

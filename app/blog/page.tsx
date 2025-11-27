@@ -2,8 +2,8 @@ export const runtime = "nodejs";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import BlogListItem from "@/components/blog-list-item";
-import { getPosts } from "../actions/blog";
 import { Metadata } from "next";
+import { getAllPosts } from "../actions/mdx-server-functions";
 
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Blog() {
-  const posts = await getPosts();
+  const posts = await getAllPosts();
   if (!posts.length) {
     return null;
   }

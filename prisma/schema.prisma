@@ -5,30 +5,36 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output = "./prisma/generated"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String        @unique
   emailVerified DateTime?
   image         String?
   avatarUrl     String?
-  role         String          @default("USER")
+  role          String        @default("USER")
   accounts      Account[]
   sessions      Session[]
   userImages    UserImage[]
   likes         Like[]
- chats         Chat[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  chats         Chat[]
+  favorites     Favorite[]
+  comments      Comment[]
+  commentLikes  CommentLike[]
+  threads       Thread[]
+  posts         Post[]
+  forumLikes    ForumLike[]
+  threadLikes   ThreadLike[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model UserImage {
@@ -49,7 +55,7 @@ model UserImage {
   @@index([cloudinaryId])
   @@index([fileName])
 }
- 
+
 model Account {
   userId            String
   type              String
@@ -62,49 +68,50 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
- 
- model MdxPost {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  date      DateTime @default(now())
-  author    String
-  description String
-  imageUrl String?
-  categories String[]
-  wordCount Int
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  likes Like[]
 
- }
+model MdxPost {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  date        DateTime   @default(now())
+  author      String
+  description String
+  imageUrl    String?
+  categories  String[]
+  wordCount   Int
+  published   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  likes       Like[]
+  favorites   Favorite[]
+  comments    Comment[]
+}
 
 model Like {
   id        String   @id @default(cuid())
@@ -113,13 +120,52 @@ model Like {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mdxPost  MdxPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mdxPost MdxPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
   @@index([userId])
   @@index([postId])
-  @@unique([userId, postId])
-
   @@map("likes")
+}
+
+model Favorite {
+  id     String  @id @default(cuid())
+  post   MdxPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([postId, userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  post      MdxPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  body      String
+  createdAt DateTime @default(now())
+
+  // for replies:
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
+  parentId String?
+  children Comment[] @relation("CommentToComment")
+
+  likes CommentLike[]
+
+  @@index([postId, parentId, createdAt])
+}
+
+model CommentLike {
+  id        String  @id @default(cuid())
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@unique([commentId, userId]) // quick existence check + de-dupe
 }
 
 model Cv {
@@ -133,7 +179,7 @@ model Cv {
   publications Publication[]
   education    Education[]
   skills       Skill[]
-  conferences   conferences[]
+  conferences  conferences[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -164,13 +210,13 @@ model Duty {
 }
 
 model Education {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   school      String
   degree      String
   startDate   DateTime
   endDate     DateTime
   description String
-  Cv          Cv?       @relation(fields: [cvId], references: [id])
+  Cv          Cv?      @relation(fields: [cvId], references: [id])
   cvId        String?
   duties      Duty[]
 }
@@ -189,12 +235,12 @@ model Publication {
 }
 
 model conferences {
-  id              String   @id @default(cuid())
-  title           String
-  conference      String
-  authors         String[]
-  Cv              Cv?      @relation(fields: [cvId], references: [id])
-  cvId            String?
+  id         String   @id @default(cuid())
+  title      String
+  conference String
+  authors    String[]
+  Cv         Cv?      @relation(fields: [cvId], references: [id])
+  cvId       String?
 }
 
 model Skill {
@@ -205,7 +251,6 @@ model Skill {
   cvId     String?
 }
 
-
 model aiStatement {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -213,74 +258,69 @@ model aiStatement {
   statement String
 }
 
-
 model Visitor {
-  id String @id @default(cuid())
-  cookieId String @unique
+  id         String   @id @default(cuid())
+  cookieId   String   @unique
   firstVisit DateTime @default(now())
-  lastVisit DateTime @updatedAt
+  lastVisit  DateTime @updatedAt
 }
 
 model Chat {
-  id String @id @default(cuid())
-  userId String
-  title String
-  createdAt DateTime @default(now())
-  messages Message[]
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-model Message {
-  id String @id @default(cuid())
-  chatId String
-  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  role String  // "user" or "assistant"
-  content String
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  createdAt DateTime  @default(now())
+  messages  Message[]
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Message {
+  id        String   @id @default(cuid())
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  role      String // "user" or "assistant"
+  content   String
+  createdAt DateTime @default(now())
+}
 
 model Kanji {
-  id String @id @default(cuid())
-  kanji                  String
-  kana                   String
-  meaning                String
-  jlpt                   Int
-  strokeNumber           Int           @map("stroke_number")
-  sentenceJp             String        @map("sentence_jp")
-  sentenceEn             String        @map("sentence_en")
-  queryKanji             Boolean       @map("query_kanji")
-  queryKanjiCharacter    String?       @map("query_kanji_character")
-  parentId               String?          
-  parent                 Kanji?   @relation("KanjiRelations", fields: [parentId], references: [id])
-  related                Kanji[]  @relation("KanjiRelations")
+  id                  String  @id @default(cuid())
+  kanji               String
+  kana                String
+  meaning             String
+  jlpt                Int
+  strokeNumber        Int     @map("stroke_number")
+  sentenceJp          String  @map("sentence_jp")
+  sentenceEn          String  @map("sentence_en")
+  queryKanji          Boolean @map("query_kanji")
+  queryKanjiCharacter String? @map("query_kanji_character")
+  parentId            String?
+  parent              Kanji?  @relation("KanjiRelations", fields: [parentId], references: [id])
+  related             Kanji[] @relation("KanjiRelations")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-
-
-
 model Resume {
-  id           String        @id @default(cuid())
-  resumeName   String       @unique
-  name         String       
-  phone        String
-  email        String
-  address      String
-  summary     String
+  id         String @id @default(cuid())
+  resumeName String @unique
+  name       String
+  phone      String
+  email      String
+  address    String
+  summary    String
 }
 
-
 model Game {
-  id          String   @id @default(cuid())
-  title       String
-  difficulty  String @default("Easy") 
+  id         String @id @default(cuid())
+  title      String
+  difficulty String @default("Easy")
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   investigators Investigator[]
-  campaignNotes  CampaignNotes[]
+  campaignNotes CampaignNotes[]
 }
 
 model CampaignNotes {
@@ -291,38 +331,39 @@ model CampaignNotes {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model Investigator {
-  id          String   @id @default(cuid())
-  name        String
-  code       String
-  gameId      String
-  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  code      String
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ResumeProfile {
-  id          String   @id @default(cuid())
-  fullName    String
-  headline    String            // e.g., "Senior Clinical Scientist"
-  location    String?           // e.g., "Chicago, IL"
-  email       String?
-  phone       String?
-  website     String?           // e.g., derickhoskinson.com
-  summary     String?           // brief professional summary/blurb
-  links       Link[]            // GitHub, LinkedIn, Scholar, etc.
-  skills      SkillGroup[]      // "Genomics", "Web Engineering", etc.
-  education   EducationalEntry[]       // degrees
+  id        String             @id @default(cuid())
+  fullName  String
+  headline  String // e.g., "Senior Clinical Scientist"
+  location  String? // e.g., "Chicago, IL"
+  email     String?
+  phone     String?
+  website   String? // e.g., derickhoskinson.com
+  summary   String? // brief professional summary/blurb
+  links     Link[] // GitHub, LinkedIn, Scholar, etc.
+  skills    SkillGroup[] // "Genomics", "Web Engineering", etc.
+  education EducationalEntry[] // degrees
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Link {
-  id        String   @id @default(cuid())
-  label     String   // "LinkedIn", "GitHub", "Google Scholar"
+  id        String        @id @default(cuid())
+  label     String // "LinkedIn", "GitHub", "Google Scholar"
   url       String
-  order     Int      @default(0)
+  order     Int           @default(0)
   profileId String
   profile   ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
@@ -330,10 +371,10 @@ model Link {
 }
 
 model SkillGroup {
-  id        String   @id @default(cuid())
-  title     String   // "Genomics & Variant Curation"
-  items     String   // comma-separated, or JSON if preferred
-  order     Int      @default(0)
+  id        String        @id @default(cuid())
+  title     String // "Genomics & Variant Curation"
+  items     String // comma-separated, or JSON if preferred
+  order     Int           @default(0)
   profileId String
   profile   ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
@@ -341,45 +382,98 @@ model SkillGroup {
 }
 
 model EducationalEntry {
-  id          String   @id @default(cuid())
-  school      String
-  degree      String       // "Ph.D. in Molecular Genetics"
-  startDate   DateTime?
-  endDate     DateTime?
-  details     String?      // thesis, advisor, honors
-  order       Int       @default(0)
-  profileId   String
-  profile     ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id        String        @id @default(cuid())
+  school    String
+  degree    String // "Ph.D. in Molecular Genetics"
+  startDate DateTime?
+  endDate   DateTime?
+  details   String? // thesis, advisor, honors
+  order     Int           @default(0)
+  profileId String
+  profile   ResumeProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@index([profileId, order])
 }
 
-model ExperienceSection{
-  id          String   @id @default(cuid())
-  title       String
-  company     String
-  location    String?
-  startDate   DateTime
-  endDate     DateTime?
-  isCurrent   Boolean  @default(false)
-  summary     String?  // optional top blurb for the role
-  order       Int      @default(0) // lets you sort multiple positions
-  bullets     Bullet[] // 1:N
+model ExperienceSection {
+  id        String    @id @default(cuid())
+  title     String
+  company   String
+  location  String?
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+  summary   String? // optional top blurb for the role
+  order     Int       @default(0) // lets you sort multiple positions
+  bullets   Bullet[] // 1:N
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([order])
 }
 
 model Bullet {
-  id            String   @id @default(cuid())
-  experienceId  String
-  content       String
-  order         Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  experienceId String
+  content      String
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  experience    ExperienceSection @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experience ExperienceSection @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
   @@index([experienceId, order])
+}
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  threads Thread[]
+}
+
+model Thread {
+  id         String       @id @default(cuid())
+  title      String
+  content    String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  author     User         @relation(fields: [authorId], references: [id])
+  authorId   String
+  category   Category     @relation(fields: [categoryId], references: [id])
+  categoryId String
+  posts      Post[]
+  likes      ThreadLike[]
+}
+
+model Post {
+  id        String      @id @default(cuid())
+  content   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String
+  thread    Thread      @relation(fields: [threadId], references: [id])
+  threadId  String
+  likes     ForumLike[]
+}
+
+model ForumLike {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  @@unique([userId, postId]) // prevent duplicate likes
+}
+
+model ThreadLike {
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  thread   Thread @relation(fields: [threadId], references: [id])
+  threadId String
+
+  @@unique([userId, threadId])
 }

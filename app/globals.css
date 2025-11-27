@@ -118,6 +118,17 @@
   }
   body {
     @apply bg-background text-foreground !min-w-full;
+    background-image: radial-gradient(
+      circle at top left,
+      color-mix(in oklch, var(--primary) 5%, transparent),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      color-mix(in oklch, var(--secondary) 10%, transparent),
+      transparent 40%
+    );
+    background-attachment: fixed;
   }
   code {
     @apply p-2 rounded-md;
