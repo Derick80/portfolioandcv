@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { Button } from "./ui/button";
 import { DiscordLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -7,7 +7,7 @@ export default async function SignIn() {
   const session = await auth();
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+    <div className="flex flex-col items-center justify-center  bg-background">
       {session ? (
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">You are signed in!</h1>
@@ -19,9 +19,8 @@ export default async function SignIn() {
       ) : (
         <div className="flex flex-col gap-2">
           <form action={
-            async function signInWithDiscord(formData: FormData) {
+            async ()=>{
               'use server';
-              const { signIn } = await import('@/auth');
               await signIn('discord', { callbackUrl: '/' });
             }
           }>
@@ -32,9 +31,8 @@ export default async function SignIn() {
           </form>
           
           <form action={
-            async function signInWithGoogle(formData: FormData) {
+            async ()=>{
               'use server';
-              const { signIn } = await import('@/auth');
               await signIn('google', { callbackUrl: '/' });
             }
           }>
@@ -48,6 +46,16 @@ export default async function SignIn() {
               <span className="ml-2">Sign in with Google</span>
             </Button>
           </form>
+
+         <form
+            action={async (formData) => {
+                "use server"
+                await signIn("resend", { email: formData.get("email") })
+            }}
+        >
+            <input type="text" name="email" placeholder="Email" />
+            <button type="submit">Signin with Resend</button>
+        </form>
         </div>
       )}
     </div>

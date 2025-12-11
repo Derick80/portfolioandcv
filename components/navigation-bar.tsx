@@ -48,14 +48,13 @@ const NavigationBar = async () => {
         {/* Section 2: Navigation Links */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
           {navLinks.map((link) => (
-            <ViewTransition key={link.href}>
-              <Link
-                href={link.href}
-                className="transition-colors hover:text-primary text-foreground/60"
-              >
-                {link.label}
-              </Link>
-            </ViewTransition>
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-foreground/60 hover:text-foreground transition"
+            >
+              {link.label}
+            </Link>
           ))}
         </div>
         {/* Mobile Links + Dropdown */}
