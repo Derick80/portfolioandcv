@@ -103,3 +103,29 @@ model Visitor {
 }
 
 
+model Mechanism{
+  id          String   @id @default(cuid())
+  geneSymbol String @unique
+ query       String
+  mechanism  String?
+  articles Article[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+ 
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  pmid        String   @unique
+  title       String?
+  abstract    String?
+  year        String?
+  journal     String?
+  authors     String[]
+  url         String?
+  articleMechanism String? 
+  mechanism   Mechanism @relation(fields: [mechanismId], references: [id], onDelete: Cascade)
+  mechanismId String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
