@@ -1,42 +1,38 @@
 import Link from "next/link";
 import { auth } from "@/auth";
 import { BrandIcon } from "@/lib/icons/brand-icon";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
 import ModeToggle from "@/app/mode-toggle";
 import { UserMenu } from "./user-menu";
-import { unstable_ViewTransition as ViewTransition } from "react";
-
-// not sure if the view transition is working
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export interface NavLink {
   label: string;
   href: string;
-  icon?: React.ReactNode;
 }
 
 const navLinks: NavLink[] = [
+  { label: "Home", href: "/" },
   { label: "Resume", href: "/cv" },
+  // { label: "Blog", href: "/blog" },
+  // { label: "Arkham", href: "/arkham" },
 ];
-
-const MAX_MOBILE_LINKS = 2;
 
 const NavigationBar = async () => {
   const session = await auth();
-  const mobileLinks = navLinks.slice(0, MAX_MOBILE_LINKS);
-  const dropdownLinks = navLinks.slice(MAX_MOBILE_LINKS);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between max-w-6xl">
-        {/* Section 1: Logo */}
-        <div className="flex-shrink-0">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between max-w-6xl">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
           <Link
             href="/"
             className="flex items-center gap-2 text-xl font-bold text-foreground transition-colors hover:text-primary"
@@ -45,50 +41,65 @@ const NavigationBar = async () => {
             <span className="hidden sm:inline-block">Dr. Hoskinson</span>
           </Link>
         </div>
-        {/* Section 2: Navigation Links */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-foreground/60 hover:text-foreground transition"
+              className="text-muted-foreground hover:text-foreground transition-colors relative group"
             >
               {link.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
             </Link>
           ))}
         </div>
-        {/* Mobile Links + Dropdown */}
-        <div className="flex md:hidden items-center space-x-2 justify-center">
-          {mobileLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-foreground/60 hover:text-foreground transition text-sm"
-            >
-              {link.label}
-            </Link>
-          ))}
-          {dropdownLinks.length > 0 && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <MenuIcon className="w-5 h-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {dropdownLinks.map((link) => (
-                  <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href}>{link.label}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
-        {/* Section 3: User Profile & Theme */}
+
+        {/* Right Side Actions */}
         <div className="flex items-center gap-4">
-          <UserMenu user={session?.user} />
-          <ModeToggle />
+          <div className="hidden md:flex items-center gap-4">
+            <ModeToggle />
+            <UserMenu user={session?.user} />
+          </div>
+
+          {/* Mobile Menu Trigger */}
+          <div className="md:hidden flex items-center gap-4">
+            <ModeToggle />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <MenuIcon className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="text-left flex items-center gap-2">
+                    <BrandIcon />
+                    Dr. Hoskinson
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-4 mt-8">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors px-2 py-1 hover:bg-accent rounded-md"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  <div className="mt-4 pt-4 border-t">
+                    <div className="flex items-center justify-between px-2">
+                      <span className="text-sm font-medium text-muted-foreground">Account</span>
+                      <UserMenu user={session?.user} />
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </nav>

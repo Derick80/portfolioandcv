@@ -14,18 +14,19 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String        @unique
+  email         String      @unique
   emailVerified DateTime?
   image         String?
   avatarUrl     String?
-  role          String        @default("USER")
+  role          String      @default("USER")
   accounts      Account[]
   sessions      Session[]
   userImages    UserImage[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  resume        Resume?
 }
 
 model UserImage {
@@ -69,6 +70,7 @@ model Account {
 }
 
 model Session {
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -86,8 +88,6 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-
-
 model aiStatement {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -102,30 +102,146 @@ model Visitor {
   lastVisit  DateTime @updatedAt
 }
 
-
-model Mechanism{
-  id          String   @id @default(cuid())
-  geneSymbol String @unique
- query       String
+model Mechanism {
+  id         String    @id @default(cuid())
+  geneSymbol String    @unique
+  query      String
   mechanism  String?
-  articles Article[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
- 
+  articles   Article[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Article {
-  id          String   @id @default(cuid())
-  pmid        String   @unique
-  title       String?
-  abstract    String?
-  year        String?
-  journal     String?
-  authors     String[]
-  url         String?
-  articleMechanism String? 
-  mechanism   Mechanism @relation(fields: [mechanismId], references: [id], onDelete: Cascade)
-  mechanismId String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String    @id @default(cuid())
+  pmid             String    @unique
+  title            String?
+  abstract         String?
+  year             String?
+  journal          String?
+  authors          String[]
+  url              String?
+  articleMechanism String?
+  mechanism        Mechanism @relation(fields: [mechanismId], references: [id], onDelete: Cascade)
+  mechanismId      String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Resume {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name    String?
+  email   String?
+  phone   String?
+  address String?
+  blurb   String? @db.Text
+
+  experiences  Experience[]
+  educations   Education[]
+  skills       Skill[]
+  publications Publication[]
+  conferences  Conference[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Experience {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  company   String
+  position  String
+  location  String?
+  startDate String?
+  endDate   String?
+
+  duties Duty[]
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Duty {
+  id           String      @id @default(cuid())
+  experienceId String?
+  experience   Experience? @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  educationId String?
+  education   Education? @relation(fields: [educationId], references: [id], onDelete: Cascade)
+
+  title String @db.Text
+  order Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Education {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  school      String
+  degree      String
+  startDate   String?
+  endDate     String?
+  description String? @db.Text
+
+  duties Duty[]
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  title    String
+  category String
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Publication {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  title           String    @db.Text
+  journal         String?
+  journalInfo     String?
+  publicationDate DateTime?
+  doi             String?
+  pmid            String?
+  pmcid           String?
+  authors         String[]
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Conference {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  title      String   @db.Text
+  conference String?
+  authors    String[]
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

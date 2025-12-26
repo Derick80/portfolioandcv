@@ -46,3 +46,35 @@ I wanted to create a blog section for my site and I was really interested in usi
 - `pnpm run build` - create a production build
 - `pnpm run start` - start the production server
 
+# Resume Builder Application
+
+This application handles resume creation and display with a focus on printability and responsiveness.
+
+## Features
+- **Public Resume View**: Accessible at `/resume`. Server-side rendered for SEO.
+- **Resume Editor**: Accessible at `/resume/edit` (requires login).
+- **Interactive Editing**: Add, remove, and reorder bullet points. Real-time saving via Server Actions.
+- **Print Friendly**: CSS optimized for printing to A4/Letter.
+
+## Technical Stack
+- **Framework**: Next.js 15 (App Router)
+- **Database**: PostgreSQL with Prisma ORM
+- **UI**: Tailwind CSS, Shadcn UI, Lucide Icons
+- **State Management**: React 19 `useActionState`, minimal client-side state.
+
+## Setup
+1. **Database**: Ensure PostgreSQL is running.
+   ```bash
+   npx prisma db push
+   npx prisma db seed
+   ```
+2. **Environment**: Configure `.env` with `DATABASE_URL` and `AUTH_SECRET`.
+3. **Run**: `npm run dev`
+
+## Usage
+- Login to access the editor.
+- Navigate to `/resume/edit` to manage your profile, experience, education, and skills.
+- Use the up/down arrows to reorder bullet points.
+- Click "Print / Save PDF" on the public page to export.
+
+
