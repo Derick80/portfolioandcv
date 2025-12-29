@@ -245,3 +245,27 @@ model Conference {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Post {
+  id        String      @id @default(cuid())
+  title     String
+  slug      String      @unique
+  content   String
+  published Boolean     @default(false)
+  images    PostImage[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model PostImage {
+  id       String  @id @default(cuid())
+  publicId String  @unique
+  height   Int
+  width    Int
+  format   String
+  bytes    Int
+  url      String
+  alt      String?
+  post     Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
+}
